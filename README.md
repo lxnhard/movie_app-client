@@ -1,4 +1,4 @@
-# Movie API
+# Watch-Til-Death (Movie app: client side)
 This repository contains the client side for my web application Watch-Til-Death, built with React. The web
 application uses the MERN stack to provide users with access to information about different
 movies, directors, and genres. Users are able to sign up, update their
