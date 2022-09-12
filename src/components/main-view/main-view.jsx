@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+
+import { LoginView } from '../login-view/login-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 
@@ -9,10 +11,13 @@ export class MainView extends React.Component {
     super();
     this.state = {
       movies: [],
-      selectedMovie: null
+      selectedMovie: null,
+      user: null
     }
   }
 
+
+  // after mount, fetch movies from API
   componentDidMount() {
     axios.get('https://watch-til-death.herokuapp.com/movies')
       .then(response => {
@@ -31,14 +36,25 @@ export class MainView extends React.Component {
     });
   }
 
+  /* successful log in =>  update `user` property in state to that particular user*/
+  onLoggedIn(user) {
+    this.setState({
+      user: user
+    });
+  }
+
   render() {
-    const { movies, selectedMovie } = this.state;
+    const { movies, selectedMovie, user } = this.state;
 
+    /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
+    if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
 
+    // Before the movies have been loaded
     if (movies.length === 0) return <div className="main-view" />;
 
     return (
       <div className="main-view">
+        {/*If state of `selectedMovie` is not null: returned selected Movie. Else: return all movies*/}
         {selectedMovie
           ? <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
           : movies.map(movie => (
