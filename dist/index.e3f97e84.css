@@ -1,0 +1,42 @@
+.image-link {
+  cursor: pointer;
+}
+
+.card-title {
+  font-family: Oswald, sans-serif;
+  font-size: 1.5em;
+}
+
+.h-movie {
+  color: #3a7898;
+  font-family: Oswald, sans-serif;
+}
+
+.icon-back {
+  color: #3a7898;
+  cursor: pointer;
+}
+
+.icon-back :hover {
+  color: #2c5b73;
+}
+
+.icon-star {
+  color: #9f2d66;
+  cursor: pointer;
+}
+
+.movie-genre, .movie-director {
+  font-size: 20px;
+}
+
+.main-grid-item {
+  display: flex;
+}
+
+html, .app-container {
+  background-color: #fcf6f5;
+  font-family: Source Sans Pro, sans-serif;
+}
+
+/*# sourceMappingURL=index.e3f97e84.css.map */
