@@ -29,6 +29,9 @@ export function LoginView(props) {
         <Button variant="primary" type="submit" onClick={handleSubmit} className="mt-4 float-right">
           Submit
         </Button>
+        <Button variant="secondary" type="button" className="mt-4 mr-4 float-right">
+          Register
+        </Button>
       </Form>
     </>
   );
