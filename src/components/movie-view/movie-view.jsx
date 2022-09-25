@@ -16,7 +16,6 @@ export class MovieView extends React.Component {
         <Row className="mt-4 mb-2">
           <Col xs={12} md={1} className="d-flex align-items-center pr-0 mb-2 mb-md-0">
             <BsFillArrowLeftCircleFill type="button" onClick={() => { onBackClick(null); }} className="icon-back ml-md-auto p-0" size={30} />
-            {/* <Button variant="primary" type="button" onClick={() => { onBackClick(null); }}>Back</Button> */}
           </Col>
           <Col xs={11} md={7}>
             <h1 className="h-movie d-inline mr-4">{movie.Title}</h1>
@@ -46,35 +45,10 @@ export class MovieView extends React.Component {
           <Col xs={12} md={4}>
 
             <div className="movie-image">
-              <Image src={movie.ImagePath} crossOrigin="anonymous" alt={`Poster: ${movie.Title}`} title={movie.Title} className="image-movie float-md-right" rounded fluid />
+              <Image src={movie.ImagePath} alt={`Poster: ${movie.Title}`} title={movie.Title} className="image-movie float-md-right w-100" rounded fluid />
             </div>
           </Col>
         </Row>
-
-
-        {/* <div className="movie-view">
-          <div className="movie-image">
-            <img src={movie.ImagePath} crossOrigin="anonymous" alt={`Poster: ${movie.Title}`} title={movie.Title} className="image-link" />
-          </div>
-          <div className="movie-title">
-            <span className="label">Title: </span>
-            <span className="value">{movie.Title}</span>
-          </div>
-          <div className="movie-description">
-            <span className="label">Description: </span>
-            <span className="value">{movie.Description}</span>
-          </div>
-          <div className="movie-genre">
-            <span className="label">Genre: </span>
-            <span className="value">{movie.Genre.Name}</span>
-          </div>
-          <div className="movie-director">
-            <span className="label">Director: </span>
-            <span className="value">{movie.Director.Name}</span>
-          </div>
-          <button onClick={() => { onBackClick(null); }}>Back</button>
-        </div> */}
-
       </>
     )
   }
