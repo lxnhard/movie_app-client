@@ -1,5 +1,12 @@
-$color: steelblue;
+$bg-white: #FCF6F5FF;
+$bg-pink: #EDC2D8FF;
+$bg-blue: #8ABAD3FF;
+$fg-pink: #9F2D66;
+$fg-blue: #3A7898;
 
-.my-flix {
-  color: $color;
+
+html,
+.app-container {
+  font-family: 'Source Sans Pro', sans-serif;
+  background-color: $bg-white;
 }

@@ -1,0 +1,29 @@
+.h-movie {
+  color: #3a7898;
+  font-family: Oswald, sans-serif;
+}
+
+.icon-back {
+  color: #3a7898;
+  cursor: pointer;
+}
+
+.icon-back :hover {
+  color: #2c5b73;
+}
+
+.icon-star {
+  color: #9f2d66;
+  cursor: pointer;
+}
+
+.movie-genre, .movie-director {
+  font-size: 20px;
+}
+
+html, .app-container {
+  background-color: #fcf6f5;
+  font-family: Source Sans Pro, sans-serif;
+}
+
+/*# sourceMappingURL=index.5f1df611.css.map */

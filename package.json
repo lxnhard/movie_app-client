@@ -1,7 +1,7 @@
 {
   "name": "movie_app-client",
   "version": "1.0.0",
-  "description": "",
+  "description": "This repository contains the client side for my web application Watch-Til-Death, built with React. The web\r application uses the MERN stack to provide users with access to information about different\r movies, directors, and genres. Users are able to sign up, update their\r personal information, and create a list of their favorite movies.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,16 +21,19 @@
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.4.0"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.0.0-rc.0",
     "buffer": "^6.0.3",
+    "husky": "^4.3.8",
     "process": "^0.11.10"
   },
   "alias": {
     "process": {
       "global": "{}"
     }
-  }
+  },
+  "main": "index.js"
 }
