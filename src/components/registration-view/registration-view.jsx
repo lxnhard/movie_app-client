@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import PropTypes from 'prop-types';
+import axios from 'axios';
 
 export function RegistrationView(props) {
   const [username, setUsername] = useState('');
@@ -29,25 +33,31 @@ export function RegistrationView(props) {
   };
 
   return (
-    <form>
-      <label>
-        Username:
-        <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
-      </label>
-      <label>
-        Password:
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-      </label>
-      <label>
-        E-mail:
-        <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
-      </label>
-      <label>
-        Date of birth:
-        <input type="date" value={birthday} onChange={e => setBirthday(e.target.value)} />
-      </label>
-      <button type="submit" onClick={handleSubmit}>Register</button>
-    </form>
+    <>
+      <h1 className="mb-4 mt-4">Register</h1>
+      <Form >
+        <Form.Group controlId="formUsername">
+          <Form.Label>Username:</Form.Label>
+          <Form.Control type="text" onChange={e => setUsername(e.target.value)} />
+        </Form.Group>
+        <Form.Group controlId="formPassword">
+          <Form.Label>Password:</Form.Label>
+          <Form.Control type="password" onChange={e => setPassword(e.target.value)} />
+        </Form.Group>
+        <Form.Group controlId="formEmail">
+          <Form.Label>E-mail:</Form.Label>
+          <Form.Control type="email" onChange={e => setEmail(e.target.value)} />
+        </Form.Group>
+        <Form.Group controlId="formBirthday">
+          <Form.Label>Date of Birth:</Form.Label>
+          <Form.Control type="date" onChange={e => setBirthday(e.target.value)} />
+        </Form.Group>
+        <Button variant="primary" type="submit" onClick={handleSubmit} className="mt-4 float-right">
+          Submit
+        </Button>
+      </Form>
+
+    </>
   );
 }
 
