@@ -7,6 +7,8 @@ import { LoginView } from '../login-view/login-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 
+import './main-view.scss';
+
 export class MainView extends React.Component {
 
   constructor() {
@@ -66,7 +68,7 @@ export class MainView extends React.Component {
           /*If state of `selectedMovie` is not null: return selected Movie.*/
           ? (
 
-            <Col md={8}>
+            <Col xs={12}>
               <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
             </Col>
 
@@ -74,7 +76,7 @@ export class MainView extends React.Component {
           /* Else: return all movies*/
           : (
             movies.map(movie => (
-              <Col xs={12} md={4} lg={3}>
+              <Col xs={12} md={4} lg={3} className="main-grid-item mb-3">
                 <MovieCard key={movie._id} movie={movie} onMovieClick={(newSelectedMovie) => { this.setSelectedMovie(newSelectedMovie) }} />
               </Col>
             ))
