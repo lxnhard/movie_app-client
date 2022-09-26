@@ -23,15 +23,13 @@ export class MainView extends React.Component {
 
   // after mount, fetch movies from API
   componentDidMount() {
-    axios.get('https://watch-til-death.herokuapp.com/movies')
-      .then(response => {
-        this.setState({
-          movies: response.data
-        });
-      })
-      .catch(error => {
-        console.log(error);
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem('user')
       });
+      this.getMovies(accessToken);
+    }
   }
 
   setSelectedMovie(newSelectedMovie) {
@@ -40,11 +38,31 @@ export class MainView extends React.Component {
     });
   }
 
+  getMovies(token) {
+    axios.get('https://watch-til-death.herokuapp.com/movies', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        // Assign result to state
+        this.setState({
+          movies: response.data
+        });
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
+  }
+
   /* successful log in =>  update `user` property in state to that particular user*/
-  onLoggedIn(user) {
+  onLoggedIn(authData) {
+    console.log(authData);
     this.setState({
-      user: user
+      user: authData.user.Username
     });
+
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('user', authData.user.Username);
+    this.getMovies(authData.token)
   }
 
   render() {
