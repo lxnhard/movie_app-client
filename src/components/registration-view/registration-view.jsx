@@ -38,19 +38,40 @@ export function RegistrationView(props) {
       <Form >
         <Form.Group controlId="formUsername">
           <Form.Label>Username:</Form.Label>
-          <Form.Control type="text" onChange={e => setUsername(e.target.value)} />
+          <Form.Control
+            type="text"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            required
+            placeholder="Your username" />
         </Form.Group>
         <Form.Group controlId="formPassword">
           <Form.Label>Password:</Form.Label>
-          <Form.Control type="password" onChange={e => setPassword(e.target.value)} />
+          <Form.Control
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+            minLength="8"
+            placeholder="Your password" />
         </Form.Group>
         <Form.Group controlId="formEmail">
           <Form.Label>E-mail:</Form.Label>
-          <Form.Control type="email" onChange={e => setEmail(e.target.value)} />
+          <Form.Control
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+            placeholder="Your E-mail address" />
         </Form.Group>
         <Form.Group controlId="formBirthday">
           <Form.Label>Date of Birth:</Form.Label>
-          <Form.Control type="date" onChange={e => setBirthday(e.target.value)} />
+          <Form.Control
+            type="date"
+            value={email}
+            onChange={e => setBirthday(e.target.value)}
+            required
+            placeholder="Your date of birth" />
         </Form.Group>
         <Button variant="primary" type="submit" onClick={handleSubmit} className="mt-4 float-right">
           Submit
