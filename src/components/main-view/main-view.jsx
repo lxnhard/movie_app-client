@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
 import { LoginView } from '../login-view/login-view';
 import { MovieCard } from '../movie-card/movie-card';
@@ -65,6 +66,15 @@ export class MainView extends React.Component {
     this.getMovies(authData.token)
   }
 
+  /* logout */
+  onLoggedOut() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.setState({
+      user: null
+    });
+  }
+
   render() {
     const { movies, selectedMovie, user } = this.state;
 
@@ -81,26 +91,35 @@ export class MainView extends React.Component {
     if (movies.length === 0) return <div className="main-view" />;
 
     return (
-      <Row className="main-view justify-content-center">
-        {selectedMovie
-          /*If state of `selectedMovie` is not null: return selected Movie.*/
-          ? (
+      <>
+        <Row>
+          <Col xs={12}>
+            <Button variant="secondary" type="button" className="mb-2 mt-2 float-right" onClick={() => { this.onLoggedOut(); }}>
+              Log out
+            </Button>
+          </Col>
+        </Row >
+        <Row className="main-view justify-content-center">
+          {selectedMovie
+            /*If state of `selectedMovie` is not null: return selected Movie.*/
+            ? (
 
-            <Col xs={12}>
-              <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
-            </Col>
-
-          )
-          /* Else: return all movies*/
-          : (
-            movies.map(movie => (
-              <Col xs={12} md={4} lg={3} className="main-grid-item mb-3">
-                <MovieCard key={movie._id} movie={movie} onMovieClick={(newSelectedMovie) => { this.setSelectedMovie(newSelectedMovie) }} />
+              <Col xs={12}>
+                <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
               </Col>
-            ))
-          )
-        }
-      </Row>
+
+            )
+            /* Else: return all movies*/
+            : (
+              movies.map(movie => (
+                <Col xs={12} md={4} lg={3} className="main-grid-item mb-3">
+                  <MovieCard key={movie._id} movie={movie} onMovieClick={(newSelectedMovie) => { this.setSelectedMovie(newSelectedMovie) }} />
+                </Col>
+              ))
+            )
+          }
+        </Row>
+      </>
     );
   }
 }
