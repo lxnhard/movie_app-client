@@ -4,25 +4,59 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+import './login-view.scss';
 
 export function LoginView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [usernameErr, setUsernameErr] = useState('');
+  const [passwordErr, setPasswordErr] = useState('');
+  const [isWrong, setIsWrong] = useState('');
 
+  // validate input
+  const validate = () => {
+    // reset to avoid wrongly displaying error after previous invalid submit
+    setUsernameErr(false);
+    setPasswordErr(false);
+    let isReq = true;
+    if (!username) {
+      setUsernameErr('Username required.');
+      isReq = false;
+    } else if (username.length < 5) {
+      setUsernameErr('Username must be at least 5 characters long.');
+      isReq = false;
+    }
+    if (!password) {
+      setPasswordErr('Password required.');
+      isReq = false;
+    } else if (password.length < 8) {
+      setPasswordErr('Password must be at least 8 characters long.')
+      isReq = false;
+    }
+    return isReq;
+  }
+
+
+  // Submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    /* Send a request to the server for authentication */
-    axios.post('https://watch-til-death.herokuapp.com/login', {
-      Username: username,
-      Password: password
-    })
-      .then(response => {
-        const data = response.data;
-        props.onLoggedIn(data);
+    const isReq = validate();
+    // if successfully validated ...
+    if (isReq) {
+      /* Send a request to the server for authentication */
+      axios.post('https://watch-til-death.herokuapp.com/login', {
+        Username: username,
+        Password: password
       })
-      .catch(e => {
-        console.log("User doesn't exist.")
-      });
+        .then(response => {
+          const data = response.data;
+          props.onLoggedIn(data);
+        })
+        .catch(e => {
+          console.log("User doesn't exist.");
+          setIsWrong(true);
+        });
+    }
   };
 
   return (
@@ -37,6 +71,8 @@ export function LoginView(props) {
             onChange={e => setUsername(e.target.value)}
             required
             placeholder="Your username" />
+          {/* display validation error */}
+          {usernameErr && <p className="error">{usernameErr}</p>}
         </Form.Group>
         <Form.Group controlId="formPassword">
           <Form.Label>Password:</Form.Label>
@@ -47,6 +83,8 @@ export function LoginView(props) {
             required
             minLength="8"
             placeholder="Your password" />
+          {/* display validation error */}
+          {passwordErr && <p className="error">{passwordErr}</p>}
         </Form.Group>
         <Button variant="primary" type="submit" onClick={handleSubmit} className="mt-4 float-right">
           Submit
@@ -54,6 +92,7 @@ export function LoginView(props) {
         <Button variant="secondary" type="button" className="mt-4 mr-4 float-right">
           Register
         </Button>
+        <p className="error" style={{ visibility: isWrong ? 'visible' : 'hidden' }}>E-mail and/or password is incorrect.</p>
       </Form>
     </>
   );
