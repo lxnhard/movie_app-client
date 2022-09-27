@@ -70651,14 +70651,43 @@ var _propTypes = require("prop-types");
 var _propTypesDefault = parcelHelpers.interopDefault(_propTypes);
 var _axios = require("axios");
 var _axiosDefault = parcelHelpers.interopDefault(_axios);
+var _loginViewScss = require("./login-view.scss");
 var _s = $RefreshSig$();
 function LoginView(props) {
     _s();
     const [username, setUsername] = (0, _react.useState)("");
     const [password, setPassword] = (0, _react.useState)("");
+    const [usernameErr, setUsernameErr] = (0, _react.useState)("");
+    const [passwordErr, setPasswordErr] = (0, _react.useState)("");
+    const [isWrong, setIsWrong] = (0, _react.useState)("");
+    // validate input
+    const validate = ()=>{
+        // reset to avoid wrongly displaying error after previous invalid submit
+        setUsernameErr(false);
+        setPasswordErr(false);
+        let isReq = true;
+        if (!username) {
+            setUsernameErr("Username required.");
+            isReq = false;
+        } else if (username.length < 5) {
+            setUsernameErr("Username must be at least 5 characters long.");
+            isReq = false;
+        }
+        if (!password) {
+            setPasswordErr("Password required.");
+            isReq = false;
+        } else if (password.length < 8) {
+            setPasswordErr("Password must be at least 8 characters long.");
+            isReq = false;
+        }
+        return isReq;
+    };
+    // Submit
     const handleSubmit = (e)=>{
         e.preventDefault();
-        /* Send a request to the server for authentication */ (0, _axiosDefault.default).post("https://watch-til-death.herokuapp.com/login", {
+        const isReq = validate();
+        // if successfully validated ...
+        if (isReq) /* Send a request to the server for authentication */ (0, _axiosDefault.default).post("https://watch-til-death.herokuapp.com/login", {
             Username: username,
             Password: password
         }).then((response)=>{
@@ -70666,6 +70695,7 @@ function LoginView(props) {
             props.onLoggedIn(data);
         }).catch((e)=>{
             console.log("User doesn't exist.");
+            setIsWrong(true);
         });
     };
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
@@ -70675,7 +70705,7 @@ function LoginView(props) {
                 children: "Login"
             }, void 0, false, {
                 fileName: "src/components/login-view/login-view.jsx",
-                lineNumber: 30,
+                lineNumber: 64,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default), {
@@ -70687,7 +70717,7 @@ function LoginView(props) {
                                 children: "Username:"
                             }, void 0, false, {
                                 fileName: "src/components/login-view/login-view.jsx",
-                                lineNumber: 33,
+                                lineNumber: 67,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default).Control, {
@@ -70698,13 +70728,21 @@ function LoginView(props) {
                                 placeholder: "Your username"
                             }, void 0, false, {
                                 fileName: "src/components/login-view/login-view.jsx",
-                                lineNumber: 34,
+                                lineNumber: 68,
                                 columnNumber: 11
+                            }, this),
+                            usernameErr && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                className: "error",
+                                children: usernameErr
+                            }, void 0, false, {
+                                fileName: "src/components/login-view/login-view.jsx",
+                                lineNumber: 75,
+                                columnNumber: 27
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "src/components/login-view/login-view.jsx",
-                        lineNumber: 32,
+                        lineNumber: 66,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default).Group, {
@@ -70714,7 +70752,7 @@ function LoginView(props) {
                                 children: "Password:"
                             }, void 0, false, {
                                 fileName: "src/components/login-view/login-view.jsx",
-                                lineNumber: 42,
+                                lineNumber: 78,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _formDefault.default).Control, {
@@ -70726,13 +70764,21 @@ function LoginView(props) {
                                 placeholder: "Your password"
                             }, void 0, false, {
                                 fileName: "src/components/login-view/login-view.jsx",
-                                lineNumber: 43,
+                                lineNumber: 79,
                                 columnNumber: 11
+                            }, this),
+                            passwordErr && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                                className: "error",
+                                children: passwordErr
+                            }, void 0, false, {
+                                fileName: "src/components/login-view/login-view.jsx",
+                                lineNumber: 87,
+                                columnNumber: 27
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "src/components/login-view/login-view.jsx",
-                        lineNumber: 41,
+                        lineNumber: 77,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _buttonDefault.default), {
@@ -70743,7 +70789,7 @@ function LoginView(props) {
                         children: "Submit"
                     }, void 0, false, {
                         fileName: "src/components/login-view/login-view.jsx",
-                        lineNumber: 51,
+                        lineNumber: 89,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _buttonDefault.default), {
@@ -70753,19 +70799,30 @@ function LoginView(props) {
                         children: "Register"
                     }, void 0, false, {
                         fileName: "src/components/login-view/login-view.jsx",
-                        lineNumber: 54,
+                        lineNumber: 92,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+                        className: "error",
+                        style: {
+                            visibility: isWrong ? "visible" : "hidden"
+                        },
+                        children: "E-mail and/or password is incorrect."
+                    }, void 0, false, {
+                        fileName: "src/components/login-view/login-view.jsx",
+                        lineNumber: 95,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "src/components/login-view/login-view.jsx",
-                lineNumber: 31,
+                lineNumber: 65,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true);
 }
-_s(LoginView, "wuQOK7xaXdVz4RMrZQhWbI751Oc=");
+_s(LoginView, "Zj2BYh22JOyiotnUYi492Si2Tro=");
 _c = LoginView;
 LoginView.propTypes = {
     username: (0, _propTypesDefault.default).string,
@@ -70779,7 +70836,7 @@ $RefreshReg$(_c, "LoginView");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"6NCNL","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"lK6vF","prop-types":"7wKI2","react-bootstrap/Form":"iBZ80","react-bootstrap/Button":"aPzUt","axios":"jo6P5"}],"iBZ80":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","@parcel/transformer-js/src/esmodule-helpers.js":"6NCNL","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"lK6vF","prop-types":"7wKI2","react-bootstrap/Form":"iBZ80","react-bootstrap/Button":"aPzUt","axios":"jo6P5","./login-view.scss":"e57ax"}],"iBZ80":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _classnames = require("classnames");
@@ -71305,7 +71362,7 @@ const FloatingLabel = /*#__PURE__*/ _react.forwardRef(({ bsPrefix , className , 
 FloatingLabel.displayName = "FloatingLabel";
 exports.default = FloatingLabel;
 
-},{"classnames":"jocGM","react":"21dqq","./FormGroup":"1qBHH","./ThemeProvider":"dVixI","react/jsx-runtime":"6AEwr","@parcel/transformer-js/src/esmodule-helpers.js":"6NCNL"}],"eBaMl":[function() {},{}],"lJZlQ":[function() {},{}],"hEdsw":[function(require,module,exports) {
+},{"classnames":"jocGM","react":"21dqq","./FormGroup":"1qBHH","./ThemeProvider":"dVixI","react/jsx-runtime":"6AEwr","@parcel/transformer-js/src/esmodule-helpers.js":"6NCNL"}],"e57ax":[function() {},{}],"eBaMl":[function() {},{}],"lJZlQ":[function() {},{}],"hEdsw":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _classnames = require("classnames");

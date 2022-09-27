@@ -9,26 +9,67 @@ export function RegistrationView(props) {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [usernameErr, setUsernameErr] = useState('');
+  const [passwordErr, setPasswordErr] = useState('');
+  const [emailErr, setEmailErr] = useState('');
+  const [birthdayErr, setBirthdaydErr] = useState('');
 
+  // validate input
+  const validate = () => {
+    // reset to avoid wrongly displaying error after previous invalid submit
+    setUsernameErr(false);
+    setPasswordErr(false);
+    setEmailErr(false);
+    setBirthdaydErr(false);
+
+    let isReq = true;
+    if (!username) {
+      setUsernameErr('Username required.');
+      isReq = false;
+    } else if (username.length < 5) {
+      setUsernameErr('Username must be at least 5 characters long.');
+      isReq = false;
+    }
+    if (!password) {
+      setPasswordErr('Password required.');
+      isReq = false;
+    } else if (password.length < 8) {
+      setPasswordErr('Password must be at least 8 characters long.')
+      isReq = false;
+    }
+    if (!email) {
+      setEmailErr('E-mail required.');
+      isReq = false;
+    } else if (email.indexOf('@') === -1) {
+      setEmailErr('Enter valid E-mail address.')
+      isReq = false;
+    }
+    return isReq;
+  }
+
+  // submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username, password, email, birthday);
-    /* Send a request to the server for registration (post) */
-    axios.post('https://watch-til-death.herokuapp.com/users', {
-      username,
-      password,
-      email,
-      birthday
-    })
-      .then(response => {
-        this.setState({
-          movies: response.data
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    const isReq = validate();
 
+    // if successfully validated ...
+    if (isReq) {
+      /* Send a request to the server for registration (post) */
+      axios.post('https://watch-til-death.herokuapp.com/users', {
+        username,
+        password,
+        email,
+        birthday
+      })
+        .then(response => {
+          this.setState({
+            movies: response.data
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
     /* Then re-route to login-view */
   };
 
@@ -45,6 +86,8 @@ export function RegistrationView(props) {
             required
             placeholder="Your username" />
         </Form.Group>
+        {/* display validation error */}
+        {usernameErr && <p className="error">{usernameErr}</p>}
         <Form.Group controlId="formPassword">
           <Form.Label>Password:</Form.Label>
           <Form.Control
@@ -55,6 +98,8 @@ export function RegistrationView(props) {
             minLength="8"
             placeholder="Your password" />
         </Form.Group>
+        {/* display validation error */}
+        {passwordErr && <p className="error">{passwordErr}</p>}
         <Form.Group controlId="formEmail">
           <Form.Label>E-mail:</Form.Label>
           <Form.Control
@@ -64,13 +109,14 @@ export function RegistrationView(props) {
             required
             placeholder="Your E-mail address" />
         </Form.Group>
+        {/* display validation error */}
+        {emailErr && <p className="error">{emailErr}</p>}
         <Form.Group controlId="formBirthday">
           <Form.Label>Date of Birth:</Form.Label>
           <Form.Control
             type="date"
             value={email}
             onChange={e => setBirthday(e.target.value)}
-            required
             placeholder="Your date of birth" />
         </Form.Group>
         <Button variant="primary" type="submit" onClick={handleSubmit} className="mt-4 float-right">

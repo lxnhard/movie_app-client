@@ -30,6 +30,10 @@
   font-size: 20px;
 }
 
+.error {
+  color: red;
+}
+
 .main-grid-item {
   display: flex;
 }
