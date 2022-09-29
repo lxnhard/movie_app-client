@@ -3,6 +3,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image'
+
+import { Link } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
+
 import { BsFillArrowLeftCircleFill, BsStar, BsStarHalf, BsStarFill } from "react-icons/bs";
 
 import './movie-view.scss';
@@ -15,7 +19,7 @@ export class MovieView extends React.Component {
       <>
         <Row className="mt-4 mb-2">
           <Col xs={12} md={1} className="d-flex align-items-center pr-0 mb-2 mb-md-0">
-            <BsFillArrowLeftCircleFill type="button" onClick={() => { onBackClick(null); }} className="icon-back ml-md-auto p-0" size={30} />
+            <BsFillArrowLeftCircleFill type="button" onClick={() => { onBackClick() }} className="icon-back ml-md-auto p-0" size={30} />
           </Col>
           <Col xs={11} md={7}>
             <h1 className="h-movie d-inline mr-4">{movie.Title}</h1>
@@ -28,13 +32,20 @@ export class MovieView extends React.Component {
         <Row>
           <Col md={{ span: 7, offset: 1 }}>
             <div className="movie-genre">
-              <span className="label font-weight-bold">Genre: </span>
+              <Link to={`/genres/${movie.Genre.Name}`}>
+                <span className="label font-weight-bold">Genre: </span>
+                {/* <Button variant="link">Genre</Button> */}
+              </Link>
               <span className="value">{movie.Genre.Name}</span>
             </div>
 
             <div className="movie-director">
-              <span className="label font-weight-bold">Director: </span>
+              <Link to={`/directors/${movie.Director.Name}`} >
+                <span className="label font-weight-bold">Director</span><span>: </span>
+                {/* <Button variant="link" className="label font-weight-bold">Director</Button> */}
+              </Link>
               <span className="value">{movie.Director.Name}</span>
+
             </div>
 
             <div className="movie-description mb-4 mt-4">
