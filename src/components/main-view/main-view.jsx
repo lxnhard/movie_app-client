@@ -1,14 +1,21 @@
 import React from 'react';
 import axios from 'axios';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
+
 
 import { LoginView } from '../login-view/login-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
+import { RegistrationView } from '../registration-view/registration-view';
+
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
 import './main-view.scss';
+
 
 export class MainView extends React.Component {
 
@@ -16,7 +23,6 @@ export class MainView extends React.Component {
     super();
     this.state = {
       movies: [],
-      selectedMovie: null,
       user: null
     }
   }
@@ -31,12 +37,6 @@ export class MainView extends React.Component {
       });
       this.getMovies(accessToken);
     }
-  }
-
-  setSelectedMovie(newSelectedMovie) {
-    this.setState({
-      selectedMovie: newSelectedMovie
-    });
   }
 
   getMovies(token) {
@@ -56,7 +56,6 @@ export class MainView extends React.Component {
 
   /* successful log in =>  update `user` property in state to that particular user*/
   onLoggedIn(authData) {
-    console.log(authData);
     this.setState({
       user: authData.user.Username
     });
@@ -75,8 +74,9 @@ export class MainView extends React.Component {
     });
   }
 
+
   render() {
-    const { movies, selectedMovie, user } = this.state;
+    const { movies, user } = this.state;
 
     /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
     if (!user) return (
@@ -91,7 +91,9 @@ export class MainView extends React.Component {
     if (movies.length === 0) return <div className="main-view" />;
 
     return (
-      <>
+      <Router>
+
+        {/* Log out button */}
         <Row>
           <Col xs={12}>
             <Button variant="secondary" type="button" className="mb-2 mt-2 float-right" onClick={() => { this.onLoggedOut(); }}>
@@ -99,27 +101,37 @@ export class MainView extends React.Component {
             </Button>
           </Col>
         </Row >
-        <Row className="main-view justify-content-center">
-          {selectedMovie
-            /*If state of `selectedMovie` is not null: return selected Movie.*/
-            ? (
 
-              <Col xs={12}>
-                <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
+        {/* Main content */}
+        <Row className="main-view justify-content-md-center">
+
+          {/* Movie card grid component */}
+          <Route exact path="/" render={() => {
+            return movies.map(m => (
+              <Col xs={12} md={4} lg={3} className="main-grid-item mb-3" key={m._id}>
+                <MovieCard movie={m} />
               </Col>
+            ))
+          }} />
 
-            )
-            /* Else: return all movies*/
-            : (
-              movies.map(movie => (
-                <Col xs={12} md={4} lg={3} className="main-grid-item mb-3">
-                  <MovieCard key={movie._id} movie={movie} onMovieClick={(newSelectedMovie) => { this.setSelectedMovie(newSelectedMovie) }} />
-                </Col>
-              ))
-            )
+          {/* single Movie view component */}
+          <Route path="/movies/:movieId" render={({ match }) => {
+            return <Col xs={12}>
+              <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
+            </Col>
+          }} />
+
+          {/* Director view */}
+          <Route path="/directors/:name" render={({ match }) => {
+            if (movies.length === 0) return <div className="main-view" />;
+            return <Col md={8}>
+              <DirectorView director={movies.find(m => m.Director.Name === match.params.name).Director} />
+            </Col>
           }
+          } />
+
         </Row>
-      </>
+      </Router>
     );
   }
 }
