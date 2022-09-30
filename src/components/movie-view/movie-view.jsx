@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image'
 
 import { Link } from "react-router-dom";
-import { useHistory } from 'react-router-dom';
 
 import { BsFillArrowLeftCircleFill, BsStar, BsStarHalf, BsStarFill } from "react-icons/bs";
 
@@ -32,20 +31,19 @@ export class MovieView extends React.Component {
         <Row>
           <Col md={{ span: 7, offset: 1 }}>
             <div className="movie-genre">
+              <span className="label font-weight-bold">Genre: </span>
+              {/* <Button variant="link">Genre</Button> */}
               <Link to={`/genres/${movie.Genre.Name}`}>
-                <span className="label font-weight-bold">Genre: </span>
-                {/* <Button variant="link">Genre</Button> */}
+                <span className="value">{movie.Genre.Name}</span>
               </Link>
-              <span className="value">{movie.Genre.Name}</span>
             </div>
 
             <div className="movie-director">
+              <span className="label font-weight-bold">Director: </span>
+              {/* <Button variant="link" className="label font-weight-bold">Director</Button> */}
               <Link to={`/directors/${movie.Director.Name}`} >
-                <span className="label font-weight-bold">Director</span><span>: </span>
-                {/* <Button variant="link" className="label font-weight-bold">Director</Button> */}
+                <span className="value">{movie.Director.Name}</span>
               </Link>
-              <span className="value">{movie.Director.Name}</span>
-
             </div>
 
             <div className="movie-description mb-4 mt-4">
