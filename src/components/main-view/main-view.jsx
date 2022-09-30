@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
 
 import { LoginView } from '../login-view/login-view';
@@ -88,7 +88,7 @@ export class MainView extends React.Component {
             {/* Movie card grid component */}
             <Route exact path="/" render={() => {
 
-              /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
+              /* If there is no user, the LoginView is rendered.*/
               if (!user) return (
                 <Col xs={12} lg={8}>
                   <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
@@ -108,6 +108,13 @@ export class MainView extends React.Component {
 
             {/* single Movie view component */}
             <Route path="/movies/:movieId" render={({ match, history }) => {
+              /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
+              if (!user) return (
+                <Col xs={12} lg={8}>
+                  <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+                </Col>
+              );
+
               return <Col xs={12}>
                 <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
               </Col>
@@ -115,17 +122,59 @@ export class MainView extends React.Component {
 
             {/* Director view */}
             <Route path="/directors/:name" render={({ match }) => {
+              /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
+              if (!user) return (
+                <Col xs={12} lg={8}>
+                  <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+                </Col>
+              );
+
               if (movies.length === 0) return <div className="main-view" />;
               return <Col md={8}>
-                <DirectorView director={movies.find(m => m.Director.Name === match.params.name).Director} />
+                <DirectorView director={movies.find(m => m.Director.Name === match.params.name).Director} onBackClick={() => history.goBack()} />
+              </Col>
+            }
+            } />
+
+            {/* Genre view */}
+            <Route path="/genre/:name" render={({ match }) => {
+              /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
+              if (!user) return (
+                <Col xs={12} lg={8}>
+                  <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+                </Col>
+              );
+
+              if (movies.length === 0) return <div className="main-view" />;
+              return <Col md={8}>
+                <GenreView director={movies.find(m => m.Genre.Name === match.params.name).Genre} onBackClick={() => history.goBack()} />
               </Col>
             }
             } />
 
             {/* Registration view */}
             <Route path="/register" render={() => {
+              if (user) { return <Redirect to="/" /> }
               return <Col md={8}>
                 <RegistrationView />
+              </Col>
+            }
+            } />
+
+            {/* User profile view */}
+            <Route path="{`/users/${user}`}" render={({ history }) => {
+              if (!user) { return <Redirect to="/" /> }
+              return <Col md={8}>
+                <ProfileView user={user} onBackClick={() => history.goBack()} />
+              </Col>
+            }
+            } />
+
+            {/* User profile update */}
+            <Route path={`/user-update/${user}`} render={({ history }) => {
+              if (!user) { return <Redirect to="/" /> }
+              return <Col md={8}>
+                <UserUpdate user={user} onBackClick={() => history.goBack()} />
               </Col>
             }
             } />
