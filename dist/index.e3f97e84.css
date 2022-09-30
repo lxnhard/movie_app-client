@@ -30,12 +30,21 @@
   font-size: 20px;
 }
 
+.label {
+  font-family: Source Sans Pro, sans-serif;
+  font-size: 20px;
+}
+
 .error {
   color: red;
 }
 
 .main-grid-item {
   display: flex;
+}
+
+.error {
+  color: red;
 }
 
 html, .app-container {
