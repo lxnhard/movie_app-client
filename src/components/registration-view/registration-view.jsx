@@ -14,7 +14,6 @@ export function RegistrationView(props) {
   const [usernameErr, setUsernameErr] = useState('');
   const [passwordErr, setPasswordErr] = useState('');
   const [emailErr, setEmailErr] = useState('');
-  const [birthdayErr, setBirthdaydErr] = useState('');
 
   // validate input
   const validate = () => {
@@ -22,7 +21,6 @@ export function RegistrationView(props) {
     setUsernameErr(false);
     setPasswordErr(false);
     setEmailErr(false);
-    setBirthdaydErr(false);
 
     let isReq = true;
     if (!username) {
@@ -50,7 +48,7 @@ export function RegistrationView(props) {
   }
 
   // submit
-  const handleSubmit = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
     const isReq = validate();
 
@@ -58,21 +56,20 @@ export function RegistrationView(props) {
     if (isReq) {
       /* Send a request to the server for registration (post) */
       axios.post('https://watch-til-death.herokuapp.com/users', {
-        username,
-        password,
-        email,
-        birthday
+        Username: username,
+        Password: password,
+        Email: email,
+        Birthday: birthday
       })
         .then(response => {
-          this.setState({
-            movies: response.data
-          });
+          const data = response.data;
+          console.log(data);
+          window.open('/', '_self');
         })
         .catch(error => {
           console.log(error);
         });
     }
-    /* Then re-route to login-view */
   };
 
   return (
@@ -117,11 +114,11 @@ export function RegistrationView(props) {
           <Form.Label>Date of Birth:</Form.Label>
           <Form.Control
             type="date"
-            value={email}
+            value={birthday}
             onChange={e => setBirthday(e.target.value)}
             placeholder="Your date of birth" />
         </Form.Group>
-        <Button variant="primary" type="submit" onClick={handleSubmit} className="mt-4 float-right">
+        <Button variant="primary" type="submit" onClick={handleRegister} className="mt-4 float-right">
           Submit
         </Button>
       </Form>
