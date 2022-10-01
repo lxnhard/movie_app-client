@@ -32,7 +32,7 @@ export function NavBar({ user }) {
               <Nav.Link href="/">Home</Nav.Link>
             )}
             {isLoggedIn() && (
-              <Nav.Link href={`/user/${user}`}>Profile</Nav.Link>
+              <Nav.Link href={`/users/${user}`}>Profile</Nav.Link>
             )}
             {!isLoggedIn() && (
               <Nav.Link href="/register">Register</Nav.Link>
