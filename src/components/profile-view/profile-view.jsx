@@ -7,9 +7,10 @@ import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import { MovieCard } from '../movie-card/movie-card';
 import './profile-view.scss';
 
-export function ProfileView({ user }) {
+export function ProfileView({ user, movies, history }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -22,7 +23,8 @@ export function ProfileView({ user }) {
 
   useEffect(() => {
     getUser();
-  }, [])
+  }, []);
+
 
   // Fetch user data
   const getUser = () => {
@@ -32,7 +34,6 @@ export function ProfileView({ user }) {
     })
       .then(response => {
         setUserData(response.data);
-        console.log(userData);
         setBirthday(userData.Birthday.slice(0, 10));
         setUsername(userData.Username);
         setEmail(userData.Email);
@@ -80,7 +81,6 @@ export function ProfileView({ user }) {
     e.preventDefault();
     const isReq = validate();
     let token = localStorage.getItem('token');
-    console.log(token);
 
     // if successfully validated ...
     if (isReq) {
@@ -121,60 +121,69 @@ export function ProfileView({ user }) {
 
   return (
     <>
+
       <h1 className="mb-4 mt-4">Profile</h1>
-
-      <Form >
-        <Form.Group controlId="formUsername">
-          <Form.Label>Username:</Form.Label>
-          <Form.Control
-            type="text"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            required
-            placeholder={userData.Username} />
-        </Form.Group>
-        {/* display validation error */}
-        {usernameErr && <p className="error">{usernameErr}</p>}
-        <Form.Group controlId="formPassword">
-          <Form.Label>Password:</Form.Label>
-          <Form.Control
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-            minLength="8"
-            placeholder="********" />
-        </Form.Group>
-        {/* display validation error */}
-        {passwordErr && <p className="error">{passwordErr}</p>}
-        <Form.Group controlId="formEmail">
-          <Form.Label>E-mail:</Form.Label>
-          <Form.Control
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-            placeholder={userData.Email} />
-        </Form.Group>
-        {/* display validation error */}
-        {emailErr && <p className="error">{emailErr}</p>}
-        <Form.Group controlId="formBirthday">
-          <Form.Label>Date of Birth:</Form.Label>
-          <Form.Control
-            type="date"
-            value={birthday}
-            onChange={e => setBirthday(e.target.value)}
-            required />
-        </Form.Group>
-        <Button variant="primary" type="submit" onClick={handleUpdate} className="mt-4 float-right">
-          Update
-        </Button>
-      </Form>
-      <Button variant="secondary" type="submit" onClick={handleUnreg} className="mt-4 float-right">
-        Unregister
-      </Button>
-
-
+      <Row>
+        <Col xs={12}>
+          <Form >
+            <Form.Group controlId="formUsername">
+              <Form.Label>Username:</Form.Label>
+              <Form.Control
+                type="text"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                required
+                placeholder={userData.Username} />
+            </Form.Group>
+            {/* display validation error */}
+            {usernameErr && <p className="error">{usernameErr}</p>}
+            <Form.Group controlId="formPassword">
+              <Form.Label>Password:</Form.Label>
+              <Form.Control
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                minLength="8"
+                placeholder="********" />
+            </Form.Group>
+            {/* display validation error */}
+            {passwordErr && <p className="error">{passwordErr}</p>}
+            <Form.Group controlId="formEmail">
+              <Form.Label>E-mail:</Form.Label>
+              <Form.Control
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+                placeholder={userData.Email} />
+            </Form.Group>
+            {/* display validation error */}
+            {emailErr && <p className="error">{emailErr}</p>}
+            <Form.Group controlId="formBirthday">
+              <Form.Label>Date of Birth:</Form.Label>
+              <Form.Control
+                type="date"
+                value={birthday}
+                onChange={e => setBirthday(e.target.value)}
+                required />
+            </Form.Group>
+            <Button variant="primary" type="submit" onClick={handleUpdate} className="mt-4 float-right">
+              Update
+            </Button>
+          </Form>
+          <Button variant="secondary" type="submit" onClick={handleUnreg} className="mt-4 float-right">
+            Unregister
+          </Button>
+        </Col>
+      </Row>
+      <Row md={{ span: 10 }}>
+        {userData.FavoriteMovies && (movies.filter(m => userData.FavoriteMovies.includes(m._id))).map(fav => (
+          <Col xs={12} md={{ span: 3, offset: 1 }} className="main-grid-item mb-3" key={fav._id}>
+            <MovieCard movie={fav} />
+          </Col>
+        ))}
+      </Row>
     </>
   );
 }
