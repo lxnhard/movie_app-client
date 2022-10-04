@@ -158,7 +158,7 @@ export class MainView extends React.Component {
             <Route path={`/users/${user}`} render={({ history }) => {
               if (!user) { return <Redirect to="/" /> }
               return <Col md={8}>
-                <ProfileView user={user} onBackClick={() => history.goBack()} />
+                <ProfileView user={user} movies={movies} onBackClick={() => history.goBack()} />
               </Col>
             }
             } />
