@@ -62,7 +62,7 @@ export function LoginView(props) {
 
   return (
     <>
-      <h1 className="mb-4 mt-4">Login</h1>
+      <h1 className="heading mb-4 mt-4">Login</h1>
       <Form >
         <Form.Group controlId="formUsername">
           <Form.Label>Username:</Form.Label>
@@ -87,11 +87,11 @@ export function LoginView(props) {
           {/* display validation error */}
           {passwordErr && <p className="error">{passwordErr}</p>}
         </Form.Group>
-        <Button variant="primary" type="submit" onClick={handleSubmit} className="mt-4 float-right">
+        <Button variant="primary" type="submit" onClick={handleSubmit} className="btn-login mt-4 float-right">
           Submit
         </Button>
         <Link to="/register">
-          <Button variant="secondary" type="button" className="mt-4 mr-4 float-right">
+          <Button variant="secondary" type="button" className="btn-register mt-4 mr-4 float-right">
             Register
           </Button>
         </Link>

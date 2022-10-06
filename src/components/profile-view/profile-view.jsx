@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
@@ -7,10 +8,13 @@ import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { MovieCard } from '../movie-card/movie-card';
+import Card from 'react-bootstrap/Card';
+
+import { BsFillArrowLeftCircleFill, BsStar, BsStarHalf, BsStarFill } from "react-icons/bs";
+
 import './profile-view.scss';
 
-export function ProfileView({ user, movies, history }) {
+export function ProfileView({ user, movies, onBackClick }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -34,9 +38,9 @@ export function ProfileView({ user, movies, history }) {
     })
       .then(response => {
         setUserData(response.data);
-        setBirthday(userData.Birthday.slice(0, 10));
-        setUsername(userData.Username);
-        setEmail(userData.Email);
+        setBirthday(response.data.Birthday.slice(0, 10));
+        setUsername(response.data.Username);
+        setEmail(response.data.Email);
       })
       .catch(error => {
         console.log(error.response);
@@ -76,7 +80,7 @@ export function ProfileView({ user, movies, history }) {
     return isReq;
   }
 
-  // update
+  // update user info
   const handleUpdate = (e) => {
     e.preventDefault();
     const isReq = validate();
@@ -85,7 +89,7 @@ export function ProfileView({ user, movies, history }) {
     // if successfully validated ...
     if (isReq) {
 
-      /* Send a request to the server for registration (post) */
+      /* Send a request to the server to change user data (put) */
       axios.put(`https://watch-til-death.herokuapp.com/users/${userData.Username}`, {
         Username: username,
         Password: password,
@@ -104,6 +108,7 @@ export function ProfileView({ user, movies, history }) {
     }
   };
 
+  // unregister
   const handleUnreg = () => {
     let token = localStorage.getItem('token');
     axios.delete(`https://watch-til-death.herokuapp.com/users/${userData.Username}`, {
@@ -119,12 +124,40 @@ export function ProfileView({ user, movies, history }) {
       });
   };
 
+  // unfavorite
+  const handleUnfav = (event, movie) => {
+    let token = localStorage.getItem('token');
+    console.log(movie);
+    /* Send a request to the server to delete favorite (delete) */
+    axios.delete(`https://watch-til-death.herokuapp.com/users/${userData.Username}/movies/${movie}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        console.log(response);
+        window.open(`/users/${userData.Username}`, '_self');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
 
-      <h1 className="mb-4 mt-4">Profile</h1>
-      <Row>
-        <Col xs={12}>
+      <Row className="mt-1 mb-2">
+        <Col xs={10} md={{ span: 6, offset: 2 }} lg={{ span: 4, offset: 3 }}>
+          <h1 className="heading d-inline mr-3">Profile</h1>
+        </Col>
+        <Col xs={2} md={{ span: 2, offset: 2 }} lg={{ span: 2, offset: 3 }}>
+          <Link to={`/`}>
+            <BsFillArrowLeftCircleFill type="button" className="icon-back float-right ml-auto mt-2" size={40} title="Back to all movies" alt="Back button" />
+          </Link>
+        </Col>
+      </Row>
+
+
+      <Row md={8} className="justify-content-md-center">
+        <Col xs={12} md={8} lg={6}>
           <Form >
             <Form.Group controlId="formUsername">
               <Form.Label>Username:</Form.Label>
@@ -172,17 +205,35 @@ export function ProfileView({ user, movies, history }) {
               Update
             </Button>
           </Form>
-          <Button variant="secondary" type="submit" onClick={handleUnreg} className="mt-4 float-right">
+          <Button variant="secondary" type="button" onClick={handleUnreg} className="mt-4 mr-4 float-right">
             Unregister
           </Button>
         </Col>
-      </Row>
-      <Row md={{ span: 10 }}>
-        {userData.FavoriteMovies && (movies.filter(m => userData.FavoriteMovies.includes(m._id))).map(fav => (
-          <Col xs={12} md={{ span: 3, offset: 1 }} className="main-grid-item mb-3" key={fav._id}>
-            <MovieCard movie={fav} />
+
+      </Row >
+
+      <h2 className="heading mb-4 mt-4">Favorite Movies</h2>
+
+      <Row md={{ offset: 3 }}>
+        {userData.FavoriteMovies && (movies.filter(m => userData.FavoriteMovies.includes(m._id))).map(movie => (
+          <Col xs={12} md={3} className="main-grid-item mb-3" key={movie._id}>
+
+            <Card className="w-100">
+              <Link to={`/movies/${movie._id}`}>
+                <Card.Img variant="top" src={movie.ImagePath} alt={`Poster: ${movie.Title}`} title={movie.Title} className="image-link" />
+              </Link>
+              <Card.Body className="cardbody d-flex">
+
+                <Card.Title><h3 className="heading card-title">{movie.Title}</h3></Card.Title>
+
+                <div className="align-self-end ml-auto">
+                  <BsStarFill type="button" className="icon-star-filled m-n2" onClick={event => handleUnfav(event, movie._id)} title="Remove from favorites" alt="Remove from favorites" size={40} /></div>
+
+              </Card.Body>
+            </Card>
           </Col>
         ))}
+        {!userData.FavoriteMovies && <Col><p>You have not added any movies to your list of favorites yet. Click the star next to a movie's title to add it to your list of favorites.</p></Col>}
       </Row>
     </>
   );

@@ -1,3 +1,16 @@
+$bg-white: #FCF6F5FF;
+$bg-pink: #EDC2D8FF;
+$bg-blue: #8ABAD3FF;
+$fg-pink: #9F2D66;
+$fg-blue: #3A7898;
+
+
 .error {
   color: red;
+}
+
+
+.heading {
+  font-family: 'Oswald', sans-serif;
+  color: $fg-blue;
 }

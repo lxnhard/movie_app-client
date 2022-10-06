@@ -4,6 +4,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 
+import './nav-bar.scss';
+
 export function NavBar({ user }) {
 
   /* logout */
@@ -22,26 +24,26 @@ export function NavBar({ user }) {
   }
 
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar collapseOnSelect expand="lg" className="colornav">
       <Container>
-        <Navbar.Brand href="/">Watch-Til-Death</Navbar.Brand>
+        <Navbar.Brand className="brand" href="/">Watch-Til-Death</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="me-auto ml-auto">
             {isLoggedIn() && (
-              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/" className="nav-element">Home</Nav.Link>
             )}
             {isLoggedIn() && (
-              <Nav.Link href={`/users/${user}`}>Profile</Nav.Link>
+              <Nav.Link href={`/users/${user}`} className="nav-element">Profile</Nav.Link>
             )}
             {!isLoggedIn() && (
-              <Nav.Link href="/register">Register</Nav.Link>
+              <Nav.Link href="/register" className="nav-element">Register</Nav.Link>
             )}
             {!isLoggedIn() && (
-              <Nav.Link href="/">Log in</Nav.Link>
+              <Nav.Link href="/" className="nav-element">Log in</Nav.Link>
             )}
             {isLoggedIn() && (
-              <Button variant="secondary" type="button" className="mb-2 mt-2 float-right" onClick={() => onLoggedOut()} >Log out</Button>
+              <Nav.Link variant="default" type="button" className="nav-logout" onClick={() => onLoggedOut()} >Log out</Nav.Link>
             )}
           </Nav>
         </Navbar.Collapse>

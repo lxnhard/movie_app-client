@@ -1,0 +1,29 @@
+$bg-white: #FCF6F5FF;
+$bg-pink: #EDC2D8FF;
+$bg-blue: #8ABAD3FF;
+$fg-pink: #9F2D66;
+$fg-blue: #3A7898;
+
+.brand {
+  color: lighten($fg-blue, 10%);
+}
+
+.colornav {
+  background-color: $bg-white;
+  border-bottom: 5px solid $bg-blue;
+}
+
+.nav-element {
+  font-weight: 600;
+  font-size: 20px;
+  margin: 0 16px 0 0;
+  padding: 5px 0;
+
+}
+
+.nav-logout {
+  font-weight: 600;
+  font-size: 20px;
+  cursor: pointer;
+
+}

@@ -22,6 +22,7 @@ $fg-blue: #3A7898;
 .icon-star {
   color: $fg-pink;
   cursor: pointer;
+  vertical-align: baseline;
 }
 
 
@@ -32,6 +33,9 @@ $fg-blue: #3A7898;
 
 .label {
   font-size: 20px;
-
   font-family: 'Source Sans Pro', sans-serif;
+}
+
+.movie-link {
+  color: $fg-blue;
 }

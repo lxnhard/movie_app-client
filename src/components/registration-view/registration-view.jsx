@@ -74,7 +74,7 @@ export function RegistrationView(props) {
 
   return (
     <>
-      <h1 className="mb-4 mt-4">Register</h1>
+      <h1 className="mb-4 mt-4 heading">Register</h1>
       <Form >
         <Form.Group controlId="formUsername">
           <Form.Label>Username:</Form.Label>

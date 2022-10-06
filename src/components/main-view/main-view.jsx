@@ -77,7 +77,7 @@ export class MainView extends React.Component {
           <NavBar user={user} />
 
           {/* Main content */}
-          <Row className="main-view justify-content-md-center">
+          <Row className="main-view justify-content-md-center mt-3">
 
             {/* Movie card grid component */}
             <Route exact path="/" render={() => {
@@ -157,7 +157,7 @@ export class MainView extends React.Component {
             {/* User profile view */}
             <Route path={`/users/${user}`} render={({ history }) => {
               if (!user) { return <Redirect to="/" /> }
-              return <Col md={8}>
+              return <Col>
                 <ProfileView user={user} movies={movies} onBackClick={() => history.goBack()} />
               </Col>
             }

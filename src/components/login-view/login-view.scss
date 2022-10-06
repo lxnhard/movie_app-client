@@ -1,3 +1,26 @@
+$bg-white: #FCF6F5FF;
+$bg-pink: #EDC2D8FF;
+$bg-blue: #8ABAD3FF;
+$fg-pink: #9F2D66;
+$fg-blue: #3A7898;
+
+
 .error {
   color: red;
+}
+
+.btn-login {
+  background-color: $fg-blue;
+}
+
+.btn-register {
+  background-color: $fg-blue;
+  color: $fg-pink;
+  font-size: 64px;
+}
+
+
+.heading {
+  font-family: 'Oswald', sans-serif;
+  color: $fg-blue;
 }
