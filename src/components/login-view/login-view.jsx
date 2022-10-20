@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
 
 import './login-view.scss';
 
@@ -105,3 +106,10 @@ LoginView.propTypes = {
   username: PropTypes.string,
   password: PropTypes.string
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  handleSubmit: (username, password) =>
+    dispatch(handleSubmit(username, password)),
+});
+
+export default connect(null, mapDispatchToProps)(LoginView);
