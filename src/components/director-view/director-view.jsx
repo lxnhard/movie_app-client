@@ -8,13 +8,8 @@ import { MovieCard } from '../movie-card/movie-card';
 
 export function DirectorView({ director, movies, onBackClick }) {
 
-  console.log(director);
-  console.log(typeof (onBackClick));
-
   return (
     <>
-
-
       <Row className="mt-3 mb-2">
         <Col xs={10}>
           <h1 className="h1-genre d-inline mr-3">{director.Name}</h1>
