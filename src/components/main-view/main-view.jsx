@@ -84,7 +84,8 @@ class MainView extends React.Component {
             <Route exact path="/" render={() => {
 
               /* If there is no user, the LoginView is rendered.*/
-              if (!user) {
+              if (!username) {
+                console.log("no user");
                 return (
                   <Col xs={12} lg={8}>
                     <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
@@ -103,7 +104,7 @@ class MainView extends React.Component {
             {/* single Movie view component */}
             <Route path="/movies/:movieId" render={({ match, history }) => {
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
-              if (!user) return (
+              if (!username) return (
                 <Col xs={12} lg={8}>
                   <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
                 </Col>
@@ -117,7 +118,7 @@ class MainView extends React.Component {
             {/* Director view */}
             <Route path="/directors/:name" render={({ match, history }) => {
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
-              if (!user) return (
+              if (!username) return (
                 <Col xs={12}>
                   <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
                 </Col>
@@ -132,7 +133,7 @@ class MainView extends React.Component {
             {/* Genre view */}
             <Route path="/genres/:name" render={({ match, history }) => {
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
-              if (!user) {
+              if (!username) {
                 return (
                   <Col xs={12}>
                     <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
@@ -158,16 +159,16 @@ class MainView extends React.Component {
 
             {/* User profile view */}
             <Route path={`/users/${username}`} render={({ history }) => {
-              if (!user) { return <Redirect to="/" /> }
+              if (!username) { return <Redirect to="/" /> }
               return <Col>
-                <ProfileView user={username} movies={movies} onBackClick={() => history.goBack()} />
+                <ProfileView user={user} movies={movies} onBackClick={() => history.goBack()} />
               </Col>
             }
             } />
 
             {/* User profile update */}
             <Route path={`/user-update/${username}`} render={({ history }) => {
-              if (!user) { return <Redirect to="/" /> }
+              if (!username) { return <Redirect to="/" /> }
               return <Col md={8}>
                 <UserUpdate user={username} onBackClick={() => history.goBack()} />
               </Col>
