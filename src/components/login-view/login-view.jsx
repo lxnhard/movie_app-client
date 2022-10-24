@@ -108,8 +108,8 @@ LoginView.propTypes = {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  handleSubmit: (username, password) =>
-    dispatch(handleSubmit(username, password)),
+  handleSubmit: (event) =>
+    dispatch(handleSubmit(event))
 });
 
 export default connect(null, mapDispatchToProps)(LoginView);

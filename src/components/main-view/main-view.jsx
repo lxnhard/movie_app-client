@@ -36,7 +36,6 @@ class MainView extends React.Component {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
-
         this.props.setMovies(response.data);
       })
       .catch(function (error) {
@@ -52,9 +51,9 @@ class MainView extends React.Component {
     this.getMovies(authData.token)
   }
 
+
   render() {
-    const { movies } = this.props;
-    const { user } = this.props;
+    const { movies, user } = this.props;
 
 
     return (
@@ -69,22 +68,20 @@ class MainView extends React.Component {
             <Route exact path="/" render={() => {
 
               /* If there is no user, the LoginView is rendered.*/
-              if (!user) return (
-                <Col xs={12} lg={8}>
-                  <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
-                </Col>
-              );
+              if (!user) {
+                return (
+                  <Col xs={12} lg={8}>
+                    <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+                  </Col>
+                );
+              }
 
               // Before the movies have been loaded
               if (movies.length === 0) return <div className="main-view" />;
 
               return <MoviesList movies={movies} />;
 
-              // return movies.map(m => (
-              //   <Col xs={12} md={4} lg={3} className="main-grid-item mb-3" key={m._id}>
-              //     <MovieCard movie={m} />
-              //   </Col>
-              // ))
+
             }} />
 
             {/* single Movie view component */}
@@ -119,11 +116,13 @@ class MainView extends React.Component {
             {/* Genre view */}
             <Route path="/genres/:name" render={({ match, history }) => {
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
-              if (!user) return (
-                <Col xs={12}>
-                  <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
-                </Col>
-              );
+              if (!user) {
+                return (
+                  <Col xs={12}>
+                    <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+                  </Col>
+                );
+              }
 
               if (movies.length === 0) return <div className="main-view" />;
               return <Col>

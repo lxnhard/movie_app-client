@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
+import { connect } from 'react-redux';
+
 
 import './director-view.scss';
 import { MovieCard } from '../movie-card/movie-card';
@@ -44,3 +46,13 @@ export function DirectorView({ director, movies, onBackClick }) {
     </>
   );
 }
+
+
+const mapStateToProps = (state) => {
+  return {
+    movies: state.movies,
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps)(DirectorView);

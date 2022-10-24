@@ -40,25 +40,6 @@
   color: #3a7898;
 }
 
-.error {
-  color: red;
-}
-
-.btn-login {
-  background-color: #3a7898;
-}
-
-.btn-register {
-  color: #9f2d66;
-  background-color: #3a7898;
-  font-size: 64px;
-}
-
-.heading {
-  color: #3a7898;
-  font-family: Oswald, sans-serif;
-}
-
 .main-grid-item {
   display: flex;
 }
@@ -150,6 +131,25 @@
 
 .icon-back :hover {
   color: #2c5b73;
+}
+
+.error {
+  color: red;
+}
+
+.btn-login {
+  background-color: #3a7898;
+}
+
+.btn-register {
+  color: #9f2d66;
+  background-color: #3a7898;
+  font-size: 64px;
+}
+
+.heading {
+  color: #3a7898;
+  font-family: Oswald, sans-serif;
 }
 
 html, .app-container {

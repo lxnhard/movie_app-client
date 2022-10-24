@@ -3,6 +3,8 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
+import { connect } from 'react-redux';
+
 
 import './nav-bar.scss';
 
@@ -52,3 +54,12 @@ export function NavBar({ user }) {
 
   )
 }
+
+let mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    movies: state.movies,
+  };
+};
+
+export default connect(mapStateToProps)(NavBar);

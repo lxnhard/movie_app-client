@@ -248,11 +248,24 @@ ProfileView.propTypes = {
   birthday: PropTypes.number
 };
 
-let mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
   return {
-    user: state.user,
     movies: state.movies,
+    user: state.user
   };
 };
 
-export default connect(mapStateToProps, { setUser, updateUser })(ProfileView);
+const mapDispatchToProps = (dispatch) => ({
+  handleUpdate: (event) =>
+    dispatch(handleUpdate(event)),
+  handleUnreg: (event) =>
+    dispatch(handleUnreg(event)),
+  handleUnfav: (event) =>
+    dispatch(handleUnfav(event))
+
+});
+
+
+// export default connect(mapStateToProps, mapDispatchToProps, { setUser, updateUser })(ProfileView);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileView);

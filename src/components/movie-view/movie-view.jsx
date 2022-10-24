@@ -1,10 +1,9 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image'
-
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
 
 import { BsFillArrowLeftCircleFill, BsStar, BsStarHalf, BsStarFill } from "react-icons/bs";
 
@@ -60,3 +59,12 @@ export class MovieView extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    movies: state.movies,
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps)(MovieView);
