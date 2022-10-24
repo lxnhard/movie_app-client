@@ -19,7 +19,7 @@ function movies(state = [], action) {
   }
 }
 
-function user(state = null, action) {
+function user(state = {}, action) {
   switch (action.type) {
     case SET_USER:
       return action.value;
@@ -28,9 +28,22 @@ function user(state = null, action) {
     case DELETE_USER:
       return action.value;
     case SET_FAVORITE:
-      return action.value;
+      return {
+        ...state,
+        FavoriteMovies: [
+          ...state?.FavoriteMovies,
+          action.value,
+        ],
+      };
     case DELETE_FAVORITE:
-      return action.value;
+      return {
+        ...state,
+        FavoriteMovies: [
+          ...state?.FavoriteMovies.filter(
+            (movieId) => movieId !== action.value
+          ),
+        ],
+      };
     default:
       return state;
   }
