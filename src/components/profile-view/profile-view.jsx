@@ -24,30 +24,7 @@ export function ProfileView({ user, movies, onBackClick }) {
   const [usernameErr, setUsernameErr] = useState('');
   const [passwordErr, setPasswordErr] = useState('');
   const [emailErr, setEmailErr] = useState('');
-  const [userData, setUserData] = useState({});
 
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
-
-  // Fetch user data
-  const getUser = () => {
-    let token = localStorage.getItem('token');
-    axios.get(`https://watch-til-death.herokuapp.com/users/${user}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
-        setUserData(response.data);
-        setBirthday(response.data.Birthday.slice(0, 10));
-        setUsername(response.data.Username);
-        setEmail(response.data.Email);
-      })
-      .catch(error => {
-        console.log(error.response);
-      });
-  }
 
 
   // validate input
@@ -92,7 +69,7 @@ export function ProfileView({ user, movies, onBackClick }) {
     if (isReq) {
 
       /* Send a request to the server to change user data (put) */
-      axios.put(`https://watch-til-death.herokuapp.com/users/${userData.Username}`, {
+      axios.put(`https://watch-til-death.herokuapp.com/users/${user.Username}`, {
         Username: username,
         Password: password,
         Email: email,
@@ -113,7 +90,7 @@ export function ProfileView({ user, movies, onBackClick }) {
   // unregister
   const handleUnreg = () => {
     let token = localStorage.getItem('token');
-    axios.delete(`https://watch-til-death.herokuapp.com/users/${userData.Username}`, {
+    axios.delete(`https://watch-til-death.herokuapp.com/users/${user.Username}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -131,12 +108,12 @@ export function ProfileView({ user, movies, onBackClick }) {
     let token = localStorage.getItem('token');
     console.log(movie);
     /* Send a request to the server to delete favorite (delete) */
-    axios.delete(`https://watch-til-death.herokuapp.com/users/${userData.Username}/movies/${movie}`, {
+    axios.delete(`https://watch-til-death.herokuapp.com/users/${user.Username}/movies/${movie}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
         console.log(response);
-        window.open(`/users/${userData.Username}`, '_self');
+        window.open(`/users/${user.Username}`, '_self');
       })
       .catch(error => {
         console.log(error);
@@ -168,7 +145,7 @@ export function ProfileView({ user, movies, onBackClick }) {
                 value={username}
                 onChange={e => setUsername(e.target.value)}
                 required
-                placeholder={userData.Username} />
+                placeholder={user.Username} />
             </Form.Group>
             {/* display validation error */}
             {usernameErr && <p className="error">{usernameErr}</p>}
@@ -191,7 +168,7 @@ export function ProfileView({ user, movies, onBackClick }) {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
-                placeholder={userData.Email} />
+                placeholder={user.Email} />
             </Form.Group>
             {/* display validation error */}
             {emailErr && <p className="error">{emailErr}</p>}
@@ -217,7 +194,7 @@ export function ProfileView({ user, movies, onBackClick }) {
       <h2 className="heading mb-4 mt-4">Favorite Movies</h2>
 
       <Row md={{ offset: 3 }}>
-        {userData.FavoriteMovies && (movies.filter(m => userData.FavoriteMovies.includes(m._id))).map(movie => (
+        {user.FavoriteMovies && (movies.filter(m => user.FavoriteMovies.includes(m._id))).map(movie => (
           <Col xs={12} md={3} className="main-grid-item mb-3" key={movie._id}>
 
             <Card className="w-100">
@@ -235,7 +212,7 @@ export function ProfileView({ user, movies, onBackClick }) {
             </Card>
           </Col>
         ))}
-        {!userData.FavoriteMovies && <Col><p>You have not added any movies to your list of favorites yet. Click the star next to a movie's title to add it to your list of favorites.</p></Col>}
+        {!user.FavoriteMovies && <Col><p>You have not added any movies to your list of favorites yet. Click the star next to a movie's title to add it to your list of favorites.</p></Col>}
       </Row>
     </>
   );
