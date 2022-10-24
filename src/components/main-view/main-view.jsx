@@ -26,8 +26,9 @@ class MainView extends React.Component {
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
-      this.props.setUser(localStorage.getItem('user'));
+      // this.props.setUser(localStorage.getItem('user'));
       this.getMovies(accessToken);
+      this.getUser(accessToken);
     }
   }
 
@@ -43,9 +44,24 @@ class MainView extends React.Component {
       });
   }
 
+
+  // Fetch user data
+  getUser(token) {
+    const user = localStorage.getItem('user');
+    axios.get(`https://watch-til-death.herokuapp.com/users/${user}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        this.props.setUser(response.data);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  }
+
   /* successful log in =>  update `user` property in state to that particular user*/
   onLoggedIn(authData) {
-    this.props.setUser(authData.user.Username);
+    this.props.setUser(authData.user);
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
     this.getMovies(authData.token)
@@ -54,12 +70,12 @@ class MainView extends React.Component {
 
   render() {
     const { movies, user } = this.props;
-
+    const username = user.Username;
 
     return (
       <>
         <Router>
-          <NavBar user={user} />
+          <NavBar user={username} />
 
           {/* Main content */}
           <Row className="main-view justify-content-md-center mt-3">
@@ -71,7 +87,7 @@ class MainView extends React.Component {
               if (!user) {
                 return (
                   <Col xs={12} lg={8}>
-                    <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+                    <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
                   </Col>
                 );
               }
@@ -89,7 +105,7 @@ class MainView extends React.Component {
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
               if (!user) return (
                 <Col xs={12} lg={8}>
-                  <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+                  <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
                 </Col>
               );
 
@@ -103,7 +119,7 @@ class MainView extends React.Component {
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
               if (!user) return (
                 <Col xs={12}>
-                  <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+                  <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
                 </Col>
               );
               if (movies.length === 0) return <div className="main-view" />;
@@ -119,7 +135,7 @@ class MainView extends React.Component {
               if (!user) {
                 return (
                   <Col xs={12}>
-                    <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+                    <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
                   </Col>
                 );
               }
@@ -141,19 +157,19 @@ class MainView extends React.Component {
             } />
 
             {/* User profile view */}
-            <Route path={`/users/${user}`} render={({ history }) => {
+            <Route path={`/users/${username}`} render={({ history }) => {
               if (!user) { return <Redirect to="/" /> }
               return <Col>
-                <ProfileView user={user} movies={movies} onBackClick={() => history.goBack()} />
+                <ProfileView user={username} movies={movies} onBackClick={() => history.goBack()} />
               </Col>
             }
             } />
 
             {/* User profile update */}
-            <Route path={`/user-update/${user}`} render={({ history }) => {
+            <Route path={`/user-update/${username}`} render={({ history }) => {
               if (!user) { return <Redirect to="/" /> }
               return <Col md={8}>
-                <UserUpdate user={user} onBackClick={() => history.goBack()} />
+                <UserUpdate user={username} onBackClick={() => history.goBack()} />
               </Col>
             }
             } />
