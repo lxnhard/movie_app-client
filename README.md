@@ -37,5 +37,12 @@ single movie by title to the user
 ### Built with
 
 - React
+- Redux
+- React Bootstrap
 
 ### What I learned
+
+- React Design Principles for a SPA
+- Managing State and Props in React
+- Redux / Flux Pattern
+- HTTP Requests via Axios
