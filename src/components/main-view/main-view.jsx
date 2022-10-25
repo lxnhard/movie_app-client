@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { setMovies, setUser } from '../../actions/actions';
+import { setMovies, setUser, setFavorite, deleteFavorite } from '../../actions/actions';
 import MoviesList from '../movies-list/movies-list';
 import { LoginView } from '../login-view/login-view';
 import { MovieView } from '../movie-view/movie-view';
@@ -26,7 +26,6 @@ class MainView extends React.Component {
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
-      // this.props.setUser(localStorage.getItem('user'));
       this.getMovies(accessToken);
       this.getUser(accessToken);
     }
@@ -67,6 +66,45 @@ class MainView extends React.Component {
     this.getMovies(authData.token)
   }
 
+  // delete from favorites
+  handleDeleteFavorite = (movieId) => {
+    const { user } = this.props;
+    let token = localStorage.getItem('token');
+    /* Send a request to the server to delete favorite (delete) */
+    if (token !== null && user !== null) {
+      axios.delete(`https://watch-til-death.herokuapp.com/users/${user.Username}/movies/${movieId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(response => {
+          console.log(response);
+          this.props.deleteFavorite(movieId);
+
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  };
+
+  // add to favorites
+  handleAddFavorite = (movieId) => {
+    const { user } = this.props;
+    let token = localStorage.getItem('token');
+    if (token !== null && user !== null) {
+      /* Send a request to the server to add favorite (delete) */
+      axios.post(`https://watch-til-death.herokuapp.com/users/${user.Username}/movies/${movieId}`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(response => {
+          console.log(response);
+          this.props.setFavorite(movieId);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  };
+
 
   render() {
     const { movies, user } = this.props;
@@ -85,7 +123,6 @@ class MainView extends React.Component {
 
               /* If there is no user, the LoginView is rendered.*/
               if (!username) {
-                console.log("no user");
                 return (
                   <Col xs={12} lg={8}>
                     <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
@@ -111,7 +148,12 @@ class MainView extends React.Component {
               );
 
               return <Col xs={12}>
-                <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
+                <MovieView user={user}
+                  movie={movies.find(m => m._id === match.params.movieId)}
+                  isFav={user.FavoriteMovies.includes(match.params.movieId)}
+                  handleAddFavorite={this.handleAddFavorite}
+                  handleDeleteFavorite={this.handleDeleteFavorite}
+                  onBackClick={() => history.goBack()} />
               </Col>
             }} />
 
@@ -150,7 +192,7 @@ class MainView extends React.Component {
 
             {/* Registration view */}
             <Route path="/register" render={() => {
-              if (user) { return <Redirect to="/" /> }
+              if (username) { return <Redirect to="/" /> }
               return <Col md={8}>
                 <RegistrationView />
               </Col>
@@ -161,7 +203,11 @@ class MainView extends React.Component {
             <Route path={`/users/${username}`} render={({ history }) => {
               if (!username) { return <Redirect to="/" /> }
               return <Col>
-                <ProfileView user={user} movies={movies} onBackClick={() => history.goBack()} />
+                <ProfileView
+                  user={user}
+                  movies={movies}
+                  handleDeleteFavorite={this.handleDeleteFavorite}
+                  onBackClick={() => history.goBack()} />
               </Col>
             }
             } />
@@ -188,4 +234,4 @@ let mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { setMovies, setUser })(MainView);
+export default connect(mapStateToProps, { setMovies, setUser, setFavorite, deleteFavorite })(MainView);
