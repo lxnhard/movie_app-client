@@ -4,8 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-
-import { BsFillArrowLeftCircleFill, BsStar, BsStarHalf, BsStarFill } from "react-icons/bs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import './movie-view.scss';
 
@@ -15,6 +14,7 @@ export class MovieView extends React.Component {
 
   render() {
     const { movie, onBackClick, isFav, handleDeleteFavorite, handleAddFavorite } = this.props;
+
     return (
       <>
         <Row className="mt-3 mb-2">
@@ -27,11 +27,11 @@ export class MovieView extends React.Component {
             <Row >
               <Col xs={10}>
                 <h1 className="h-movie d-inline mr-3">{movie.Title}</h1>
-                {isFav && (<BsStarFill type="button" className="icon-star" size={40} onClick={() => handleDeleteFavorite(movie._id)} />)}
-                {!isFav && (<BsStar type="button" className="icon-star" size={40} onClick={() => handleAddFavorite(movie._id)} />)}
+                {isFav && (<FontAwesomeIcon icon={['fas', 'fa-star']} type="button" className="icon-star" onClick={() => handleDeleteFavorite(movie._id)} title="Remove from favorites" alt="Remove from favorites" size={"2x"} />)}
+                {!isFav && (<FontAwesomeIcon icon={['far', 'fa-star']} type="button" className="icon-star" onClick={() => handleAddFavorite(movie._id)} title="Add to favorites" alt="Remove from favorites" size={"2x"} />)}
               </Col>
               <Col xs={2}>
-                <BsFillArrowLeftCircleFill type="button" onClick={() => { onBackClick() }} className="icon-back float-right ml-auto mt-2" size={40} />
+                <FontAwesomeIcon icon={['fas', 'fa-circle-chevron-left']} type="button" onClick={() => { onBackClick() }} className="icon-back float-right ml-auto" size="3x" title="Back to all movies" alt="Back button" />
               </Col>
             </Row>
             <Row>

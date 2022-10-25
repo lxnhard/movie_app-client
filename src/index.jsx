@@ -11,6 +11,20 @@ import MainView from './components/main-view/main-view';
 // Import statement to indicate that you need to bundle `./index.scss`
 import './index.scss';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+// import your icons
+import { faStar as faStarFull, faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faStarHalf, faStar } from '@fortawesome/free-regular-svg-icons';
+
+library.add(
+  faStarHalf,
+  faStar,
+  faStarFull,
+  faCircleChevronLeft
+  // more icons go here
+);
+
+
 const store = createStore(moviesApp, devToolsEnhancer());
 
 // Main component (will eventually use all the others)

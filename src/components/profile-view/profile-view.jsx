@@ -9,11 +9,9 @@ import { setUser, updateUser } from '../../actions/actions';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
 import Card from 'react-bootstrap/Card';
 
-import { BsFillArrowLeftCircleFill, BsStar, BsStarHalf, BsStarFill } from "react-icons/bs";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './profile-view.scss';
 
 export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick }) {
@@ -106,20 +104,19 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
 
   return (
     <>
-
       <Row className="mt-1 mb-2">
-        <Col xs={10} md={{ span: 6, offset: 2 }} lg={{ span: 4, offset: 3 }}>
+        <Col xs={10} md={{ span: 6 }} lg={{ span: 4 }}>
           <h1 className="heading d-inline mr-3">Profile</h1>
         </Col>
-        <Col xs={2} md={{ span: 2, offset: 2 }} lg={{ span: 2, offset: 3 }}>
+        <Col xs={2} md={{ span: 2, offset: 4 }} lg={{ span: 2, offset: 6 }}>
           <Link to={`/`}>
-            <BsFillArrowLeftCircleFill type="button" onClick={() => { onBackClick() }} className="icon-back float-right ml-auto mt-2" size={40} title="Back to all movies" alt="Back button" />
+            <FontAwesomeIcon icon={['fas', 'fa-circle-chevron-left']} type="button" onClick={() => { onBackClick() }} className="icon-back float-right ml-auto" size="3x" title="Back to all movies" alt="Back button" />
           </Link>
         </Col>
       </Row>
 
 
-      <Row md={8} className="justify-content-md-center">
+      <Row md={12} className="justify-content-md-center">
         <Col xs={12} md={8} lg={6}>
           <Form >
             <Form.Group controlId="formUsername">
@@ -190,7 +187,8 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
                 <Card.Title><h3 className="heading card-title">{movie.Title}</h3></Card.Title>
 
                 <div className="align-self-end ml-auto">
-                  <BsStarFill type="button" className="icon-star-filled m-n2" onClick={() => handleDeleteFavorite(movie._id)} title="Remove from favorites" alt="Remove from favorites" size={40} /></div>
+                  <FontAwesomeIcon icon={['fas', 'fa-star']} type="button" className="icon-star m-n2" onClick={() => handleDeleteFavorite(movie._id)} title="Remove from favorites" alt="Remove from favorites" size={"2x"} />
+                </div>
 
               </Card.Body>
             </Card>

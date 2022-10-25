@@ -72,16 +72,10 @@
   color: red;
 }
 
-.icon-star-filled {
+.icon-star {
   color: #9f2d66;
   cursor: pointer;
   stroke: #9f2d66;
-}
-
-.icon-star-filled :hover {
-  fill: none;
-  stroke-linejoin: bevel;
-  stroke-width: 5%;
 }
 
 .heading, .h2-profile {
