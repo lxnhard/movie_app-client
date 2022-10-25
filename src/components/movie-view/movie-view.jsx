@@ -11,8 +11,10 @@ import './movie-view.scss';
 
 
 export class MovieView extends React.Component {
+
+
   render() {
-    const { movie, onBackClick } = this.props;
+    const { movie, onBackClick, isFav, handleDeleteFavorite, handleAddFavorite } = this.props;
     return (
       <>
         <Row className="mt-3 mb-2">
@@ -25,7 +27,8 @@ export class MovieView extends React.Component {
             <Row >
               <Col xs={10}>
                 <h1 className="h-movie d-inline mr-3">{movie.Title}</h1>
-                <BsStar type="button" className="icon-star" size={40} />
+                {isFav && (<BsStarFill type="button" className="icon-star" size={40} onClick={() => handleDeleteFavorite(movie._id)} />)}
+                {!isFav && (<BsStar type="button" className="icon-star" size={40} onClick={() => handleAddFavorite(movie._id)} />)}
               </Col>
               <Col xs={2}>
                 <BsFillArrowLeftCircleFill type="button" onClick={() => { onBackClick() }} className="icon-back float-right ml-auto mt-2" size={40} />
@@ -67,4 +70,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(MovieView);
+// is this necessary / correct?
+const mapDispatchToProps = (dispatch) => ({
+  handleDeleteFavorite: (event) =>
+    dispatch(deleteFavorite(event)),
+  handleAddFavorite: (event) =>
+    dispatch(setFavorite(event)),
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieView);

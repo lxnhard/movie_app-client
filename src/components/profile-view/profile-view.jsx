@@ -16,7 +16,7 @@ import { BsFillArrowLeftCircleFill, BsStar, BsStarHalf, BsStarFill } from "react
 
 import './profile-view.scss';
 
-export function ProfileView({ user, movies, onBackClick }) {
+export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -103,22 +103,6 @@ export function ProfileView({ user, movies, onBackClick }) {
       });
   };
 
-  // unfavorite
-  const handleUnfav = (event, movie) => {
-    let token = localStorage.getItem('token');
-    console.log(movie);
-    /* Send a request to the server to delete favorite (delete) */
-    axios.delete(`https://watch-til-death.herokuapp.com/users/${user.Username}/movies/${movie}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
-        console.log(response);
-        window.open(`/users/${user.Username}`, '_self');
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
 
   return (
     <>
@@ -129,7 +113,7 @@ export function ProfileView({ user, movies, onBackClick }) {
         </Col>
         <Col xs={2} md={{ span: 2, offset: 2 }} lg={{ span: 2, offset: 3 }}>
           <Link to={`/`}>
-            <BsFillArrowLeftCircleFill type="button" className="icon-back float-right ml-auto mt-2" size={40} title="Back to all movies" alt="Back button" />
+            <BsFillArrowLeftCircleFill type="button" onClick={() => { onBackClick() }} className="icon-back float-right ml-auto mt-2" size={40} title="Back to all movies" alt="Back button" />
           </Link>
         </Col>
       </Row>
@@ -206,13 +190,13 @@ export function ProfileView({ user, movies, onBackClick }) {
                 <Card.Title><h3 className="heading card-title">{movie.Title}</h3></Card.Title>
 
                 <div className="align-self-end ml-auto">
-                  <BsStarFill type="button" className="icon-star-filled m-n2" onClick={event => handleUnfav(event, movie._id)} title="Remove from favorites" alt="Remove from favorites" size={40} /></div>
+                  <BsStarFill type="button" className="icon-star-filled m-n2" onClick={() => handleDeleteFavorite(movie._id)} title="Remove from favorites" alt="Remove from favorites" size={40} /></div>
 
               </Card.Body>
             </Card>
           </Col>
         ))}
-        {!user.FavoriteMovies && <Col><p>You have not added any movies to your list of favorites yet. Click the star next to a movie's title to add it to your list of favorites.</p></Col>}
+        {!(user.FavoriteMovies.length > 0) && <Col><p>You have not added any movies to your list of favorites yet. Click the star next to a movie's title to add it to your list of favorites.</p></Col>}
       </Row>
     </>
   );
@@ -232,14 +216,14 @@ const mapStateToProps = (state) => {
   };
 };
 
+// is this necessary / correct?
 const mapDispatchToProps = (dispatch) => ({
   handleUpdate: (event) =>
-    dispatch(handleUpdate(event)),
+    dispatch(updateUser(event)),
   handleUnreg: (event) =>
-    dispatch(handleUnreg(event)),
-  handleUnfav: (event) =>
-    dispatch(handleUnfav(event))
-
+    dispatch(deleteUser(event)),
+  handleDeleteFavorite: (event) =>
+    dispatch(deleteFavorite(event))
 });
 
 
