@@ -43,6 +43,5 @@
     "process": {
       "global": "{}"
     }
-  },
-  "main": "src/index.html"
+  }
 }
