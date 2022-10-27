@@ -4,17 +4,17 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { setUser, updateUser } from '../../actions/actions';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
 import Card from 'react-bootstrap/Card';
 
-import { BsFillArrowLeftCircleFill, BsStar, BsStarHalf, BsStarFill } from "react-icons/bs";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './profile-view.scss';
 
-export function ProfileView({ user, movies, onBackClick }) {
+export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -22,30 +22,7 @@ export function ProfileView({ user, movies, onBackClick }) {
   const [usernameErr, setUsernameErr] = useState('');
   const [passwordErr, setPasswordErr] = useState('');
   const [emailErr, setEmailErr] = useState('');
-  const [userData, setUserData] = useState({});
 
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
-
-  // Fetch user data
-  const getUser = () => {
-    let token = localStorage.getItem('token');
-    axios.get(`https://watch-til-death.herokuapp.com/users/${user}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
-        setUserData(response.data);
-        setBirthday(response.data.Birthday.slice(0, 10));
-        setUsername(response.data.Username);
-        setEmail(response.data.Email);
-      })
-      .catch(error => {
-        console.log(error.response);
-      });
-  }
 
 
   // validate input
@@ -90,7 +67,7 @@ export function ProfileView({ user, movies, onBackClick }) {
     if (isReq) {
 
       /* Send a request to the server to change user data (put) */
-      axios.put(`https://watch-til-death.herokuapp.com/users/${userData.Username}`, {
+      axios.put(`https://watch-til-death.herokuapp.com/users/${user.Username}`, {
         Username: username,
         Password: password,
         Email: email,
@@ -111,7 +88,7 @@ export function ProfileView({ user, movies, onBackClick }) {
   // unregister
   const handleUnreg = () => {
     let token = localStorage.getItem('token');
-    axios.delete(`https://watch-til-death.herokuapp.com/users/${userData.Username}`, {
+    axios.delete(`https://watch-til-death.herokuapp.com/users/${user.Username}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -124,39 +101,22 @@ export function ProfileView({ user, movies, onBackClick }) {
       });
   };
 
-  // unfavorite
-  const handleUnfav = (event, movie) => {
-    let token = localStorage.getItem('token');
-    console.log(movie);
-    /* Send a request to the server to delete favorite (delete) */
-    axios.delete(`https://watch-til-death.herokuapp.com/users/${userData.Username}/movies/${movie}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
-        console.log(response);
-        window.open(`/users/${userData.Username}`, '_self');
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
 
   return (
     <>
-
       <Row className="mt-1 mb-2">
-        <Col xs={10} md={{ span: 6, offset: 2 }} lg={{ span: 4, offset: 3 }}>
+        <Col xs={10} md={{ span: 6 }} lg={{ span: 4 }}>
           <h1 className="heading d-inline mr-3">Profile</h1>
         </Col>
-        <Col xs={2} md={{ span: 2, offset: 2 }} lg={{ span: 2, offset: 3 }}>
+        <Col xs={2} md={{ span: 2, offset: 4 }} lg={{ span: 2, offset: 6 }}>
           <Link to={`/`}>
-            <BsFillArrowLeftCircleFill type="button" className="icon-back float-right ml-auto mt-2" size={40} title="Back to all movies" alt="Back button" />
+            <FontAwesomeIcon icon={['fas', 'fa-circle-chevron-left']} type="button" onClick={() => { onBackClick() }} className="icon-back float-right ml-auto" size="3x" title="Back to all movies" alt="Back button" />
           </Link>
         </Col>
       </Row>
 
 
-      <Row md={8} className="justify-content-md-center">
+      <Row md={12} className="justify-content-md-center">
         <Col xs={12} md={8} lg={6}>
           <Form >
             <Form.Group controlId="formUsername">
@@ -166,7 +126,7 @@ export function ProfileView({ user, movies, onBackClick }) {
                 value={username}
                 onChange={e => setUsername(e.target.value)}
                 required
-                placeholder={userData.Username} />
+                placeholder={user.Username} />
             </Form.Group>
             {/* display validation error */}
             {usernameErr && <p className="error">{usernameErr}</p>}
@@ -189,7 +149,7 @@ export function ProfileView({ user, movies, onBackClick }) {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
-                placeholder={userData.Email} />
+                placeholder={user.Email} />
             </Form.Group>
             {/* display validation error */}
             {emailErr && <p className="error">{emailErr}</p>}
@@ -215,7 +175,7 @@ export function ProfileView({ user, movies, onBackClick }) {
       <h2 className="heading mb-4 mt-4">Favorite Movies</h2>
 
       <Row md={{ offset: 3 }}>
-        {userData.FavoriteMovies && (movies.filter(m => userData.FavoriteMovies.includes(m._id))).map(movie => (
+        {user.FavoriteMovies && (movies.filter(m => user.FavoriteMovies.includes(m._id))).map(movie => (
           <Col xs={12} md={3} className="main-grid-item mb-3" key={movie._id}>
 
             <Card className="w-100">
@@ -227,13 +187,14 @@ export function ProfileView({ user, movies, onBackClick }) {
                 <Card.Title><h3 className="heading card-title">{movie.Title}</h3></Card.Title>
 
                 <div className="align-self-end ml-auto">
-                  <BsStarFill type="button" className="icon-star-filled m-n2" onClick={event => handleUnfav(event, movie._id)} title="Remove from favorites" alt="Remove from favorites" size={40} /></div>
+                  <FontAwesomeIcon icon={['fas', 'fa-star']} type="button" className="icon-star m-n2" onClick={() => handleDeleteFavorite(movie._id)} title="Remove from favorites" alt="Remove from favorites" size={"2x"} />
+                </div>
 
               </Card.Body>
             </Card>
           </Col>
         ))}
-        {!userData.FavoriteMovies && <Col><p>You have not added any movies to your list of favorites yet. Click the star next to a movie's title to add it to your list of favorites.</p></Col>}
+        {!(user.FavoriteMovies.length > 0) && <Col><p>You have not added any movies to your list of favorites yet. Click the star next to a movie's title to add it to your list of favorites.</p></Col>}
       </Row>
     </>
   );
@@ -245,3 +206,25 @@ ProfileView.propTypes = {
   email: PropTypes.string,
   birthday: PropTypes.number
 };
+
+const mapStateToProps = (state) => {
+  return {
+    movies: state.movies,
+    user: state.user
+  };
+};
+
+// is this necessary / correct?
+const mapDispatchToProps = (dispatch) => ({
+  handleUpdate: (event) =>
+    dispatch(updateUser(event)),
+  handleUnreg: (event) =>
+    dispatch(deleteUser(event)),
+  handleDeleteFavorite: (event) =>
+    dispatch(deleteFavorite(event))
+});
+
+
+// export default connect(mapStateToProps, mapDispatchToProps, { setUser, updateUser })(ProfileView);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileView);

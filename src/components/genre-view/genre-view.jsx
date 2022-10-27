@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { BsFillArrowLeftCircleFill } from "react-icons/bs";
+import { connect } from 'react-redux';
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 import './genre-view.scss';
 import { MovieCard } from '../movie-card/movie-card';
@@ -15,7 +18,7 @@ export function GenreView({ genre, movies, onBackClick }) {
           <h1 className="h1-genre d-inline mr-3">{genre.Name}</h1>
         </Col>
         <Col xs={2}>
-          <BsFillArrowLeftCircleFill type="button" onClick={() => { onBackClick() }} className="icon-back float-right ml-auto mt-2" size={40} />
+          <FontAwesomeIcon icon={['fas', 'fa-circle-chevron-left']} type="button" onClick={() => { onBackClick() }} className="icon-back float-right ml-auto" size="3x" title="Back to all movies" alt="Back button" />
         </Col>
       </Row>
 
@@ -41,3 +44,12 @@ export function GenreView({ genre, movies, onBackClick }) {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    movies: state.movies,
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps)(GenreView);

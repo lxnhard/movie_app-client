@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { BsFillArrowLeftCircleFill } from "react-icons/bs";
+import { connect } from 'react-redux';
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 import './director-view.scss';
 import { MovieCard } from '../movie-card/movie-card';
 
 export function DirectorView({ director, movies, onBackClick }) {
 
-  console.log(director);
-  console.log(typeof (onBackClick));
-
   return (
     <>
-
-
       <Row className="mt-3 mb-2">
         <Col xs={10}>
           <h1 className="h1-genre d-inline mr-3">{director.Name}</h1>
         </Col>
         <Col xs={2}>
-          <BsFillArrowLeftCircleFill type="button" onClick={() => { onBackClick() }} className="icon-back float-right ml-auto mt-2" size={40} />
+          <FontAwesomeIcon icon={['fas', 'fa-circle-chevron-left']} type="button" onClick={() => { onBackClick() }} className="icon-back float-right ml-auto" size="3x" title="Back to all movies" alt="Back button" />
         </Col>
         <Col xs={11} md={12}>
           <span>*{director.Birth}</span>{director.Death && (<span> ✝{director.Death}</span>)}
@@ -49,3 +47,13 @@ export function DirectorView({ director, movies, onBackClick }) {
     </>
   );
 }
+
+
+const mapStateToProps = (state) => {
+  return {
+    movies: state.movies,
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps)(DirectorView);
