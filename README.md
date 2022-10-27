@@ -30,6 +30,7 @@ single movie by title to the user
 
 ### Links
 
+- Deployed app: [https://watch-til-death.netlify.app/]
 - Rest API: [https://github.com/lxnhard/movie_api]
 
 ## My process
