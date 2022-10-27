@@ -121,17 +121,14 @@ class MainView extends React.Component {
             {/* Movie card grid component */}
             <Route exact path="/" render={() => {
 
-              // Before the movies have been loaded
-              if (movies.length === 0) return <div className="main-view" />;
-
-              /* If there is no user, the LoginView is rendered.*/
-              if (!username) {
-                return (
-                  <Col xs={12} lg={8}>
-                    <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
-                  </Col>
-                );
-              }
+              // Before the movies have been loaded if logged in 
+              if (movies.length === 0 && localStorage.getItem('user')) return <div className="main-view" />;
+              /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
+              if (!username) return (
+                <Col xs={12}>
+                  <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
+                </Col>
+              );
 
               return <MoviesList movies={movies} />;
 
@@ -141,11 +138,11 @@ class MainView extends React.Component {
             {/* single Movie view component */}
             <Route path="/movies/:movieId" render={({ match, history }) => {
 
-              // Before the movies have been loaded
-              if (movies.length === 0) return <div className="main-view" />;
+              // Before the movies have been loaded if logged in 
+              if (movies.length === 0 && localStorage.getItem('user')) return <div className="main-view" />;
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
               if (!username) return (
-                <Col xs={12} lg={8}>
+                <Col xs={12}>
                   <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
                 </Col>
               );
@@ -162,15 +159,15 @@ class MainView extends React.Component {
 
             {/* Director view */}
             <Route path="/directors/:name" render={({ match, history }) => {
-              // Before the movies have been loaded
-              if (movies.length === 0) return <div className="main-view" />;
+              // Before the movies have been loaded if logged in 
+              if (movies.length === 0 && localStorage.getItem('user')) return <div className="main-view" />;
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
               if (!username) return (
                 <Col xs={12}>
                   <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
                 </Col>
               );
-              if (movies.length === 0) return <div className="main-view" />;
+
               return <Col>
                 <DirectorView director={movies.find(m => m.Director.Name === match.params.name).Director} movies={movies.filter(m => m.Director.Name === match.params.name)} onBackClick={() => history.goBack()} />
               </Col>
@@ -179,16 +176,15 @@ class MainView extends React.Component {
 
             {/* Genre view */}
             <Route path="/genres/:name" render={({ match, history }) => {
-              // Before the movies have been loaded
-              if (movies.length === 0) return <div className="main-view" />;
+              // Before the movies have been loaded if logged in 
+              if (movies.length === 0 && localStorage.getItem('user')) return <div className="main-view" />;
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
-              if (!username) {
-                return (
-                  <Col xs={12}>
-                    <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
-                  </Col>
-                );
-              }
+              if (!username) return (
+                <Col xs={12}>
+                  <LoginView onLoggedIn={username => this.onLoggedIn(username)} />
+                </Col>
+              );
+
               return <Col>
                 <GenreView genre={movies.find(m => m.Genre.Name === match.params.name).Genre} movies={movies.filter(m => m.Genre.Name === match.params.name)} onBackClick={() => history.goBack()} />
               </Col>
@@ -217,14 +213,7 @@ class MainView extends React.Component {
             }
             } />
 
-            {/* User profile update */}
-            <Route path={`/user-update/${username}`} render={({ history }) => {
-              if (!username) { return <Redirect to="/" /> }
-              return <Col md={8}>
-                <UserUpdate user={username} onBackClick={() => history.goBack()} />
-              </Col>
-            }
-            } />
+
           </Row>
         </Router>
       </>
