@@ -121,6 +121,9 @@ class MainView extends React.Component {
             {/* Movie card grid component */}
             <Route exact path="/" render={() => {
 
+              // Before the movies have been loaded
+              if (movies.length === 0) return <div className="main-view" />;
+
               /* If there is no user, the LoginView is rendered.*/
               if (!username) {
                 return (
@@ -130,9 +133,6 @@ class MainView extends React.Component {
                 );
               }
 
-              // Before the movies have been loaded
-              if (movies.length === 0) return <div className="main-view" />;
-
               return <MoviesList movies={movies} />;
 
 
@@ -140,6 +140,9 @@ class MainView extends React.Component {
 
             {/* single Movie view component */}
             <Route path="/movies/:movieId" render={({ match, history }) => {
+
+              // Before the movies have been loaded
+              if (movies.length === 0) return <div className="main-view" />;
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
               if (!username) return (
                 <Col xs={12} lg={8}>
@@ -159,6 +162,8 @@ class MainView extends React.Component {
 
             {/* Director view */}
             <Route path="/directors/:name" render={({ match, history }) => {
+              // Before the movies have been loaded
+              if (movies.length === 0) return <div className="main-view" />;
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
               if (!username) return (
                 <Col xs={12}>
@@ -174,6 +179,8 @@ class MainView extends React.Component {
 
             {/* Genre view */}
             <Route path="/genres/:name" render={({ match, history }) => {
+              // Before the movies have been loaded
+              if (movies.length === 0) return <div className="main-view" />;
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView*/
               if (!username) {
                 return (
@@ -182,8 +189,6 @@ class MainView extends React.Component {
                   </Col>
                 );
               }
-
-              if (movies.length === 0) return <div className="main-view" />;
               return <Col>
                 <GenreView genre={movies.find(m => m.Genre.Name === match.params.name).Genre} movies={movies.filter(m => m.Genre.Name === match.params.name)} onBackClick={() => history.goBack()} />
               </Col>
@@ -234,4 +239,5 @@ let mapStateToProps = state => {
   }
 }
 
+// export default connect(mapStateToProps, {mapDispatchToProps object with actionCreators for dispatched actions})(Component);
 export default connect(mapStateToProps, { setMovies, setUser, setFavorite, deleteFavorite })(MainView);
