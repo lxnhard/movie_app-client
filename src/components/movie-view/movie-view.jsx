@@ -70,7 +70,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-// is this necessary / correct?
 const mapDispatchToProps = (dispatch) => ({
   handleDeleteFavorite: (event) =>
     dispatch(deleteFavorite(event)),
