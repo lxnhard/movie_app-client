@@ -67,7 +67,7 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
     if (isReq) {
 
       /* Send a request to the server to change user data (put) */
-      axios.put(`https://watch-til-death.herokuapp.com/users/${user.Username}`, {
+      axios.put(`https://watch-til-death.cyclic.app/users/${user.Username}`, {
         Username: username,
         Password: password,
         Email: email,
@@ -88,7 +88,7 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
   // unregister
   const handleUnreg = () => {
     let token = localStorage.getItem('token');
-    axios.delete(`https://watch-til-death.herokuapp.com/users/${user.Username}`, {
+    axios.delete(`https://watch-til-death.cyclic.app/users/${user.Username}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
