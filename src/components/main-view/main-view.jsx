@@ -32,7 +32,7 @@ class MainView extends React.Component {
   }
 
   getMovies(token) {
-    axios.get('https://watch-til-death.herokuapp.com/movies', {
+    axios.get('https://watch-til-death.cyclic.app/movies', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -47,7 +47,7 @@ class MainView extends React.Component {
   // Fetch user data
   getUser(token) {
     const user = localStorage.getItem('user');
-    axios.get(`https://watch-til-death.herokuapp.com/users/${user}`, {
+    axios.get(`https://watch-til-death.cyclic.app/users/${user}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -72,7 +72,7 @@ class MainView extends React.Component {
     let token = localStorage.getItem('token');
     /* Send a request to the server to delete favorite (delete) */
     if (token !== null && user !== null) {
-      axios.delete(`https://watch-til-death.herokuapp.com/users/${user.Username}/movies/${movieId}`, {
+      axios.delete(`https://watch-til-death.cyclic.app/users/${user.Username}/movies/${movieId}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(response => {
@@ -92,7 +92,7 @@ class MainView extends React.Component {
     let token = localStorage.getItem('token');
     if (token !== null && user !== null) {
       /* Send a request to the server to add favorite (delete) */
-      axios.post(`https://watch-til-death.herokuapp.com/users/${user.Username}/movies/${movieId}`, {}, {
+      axios.post(`https://watch-til-death.cyclic.app/users/${user.Username}/movies/${movieId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(response => {
