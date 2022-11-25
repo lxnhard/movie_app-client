@@ -1,3 +1,11 @@
 .main-grid-item {
   display: flex;
 }
+
+
+/* customizations */
+$theme-colors: (
+  "info": tomato,
+  "danger": teal,
+  "primary": tomato
+);

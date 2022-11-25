@@ -7,6 +7,25 @@
   font-size: 1.5em;
 }
 
+.error {
+  color: red;
+}
+
+.btn-login {
+  background-color: #3a7898;
+}
+
+.btn-register {
+  color: #9f2d66;
+  background-color: #3a7898;
+  font-size: 64px;
+}
+
+.heading {
+  color: #3a7898;
+  font-family: Oswald, sans-serif;
+}
+
 .h-movie {
   color: #3a7898;
   font-family: Oswald, sans-serif;
@@ -44,70 +63,19 @@
   color: red;
 }
 
-.btn-login {
-  background-color: #3a7898;
-}
-
-.btn-register {
-  color: #9f2d66;
-  background-color: #3a7898;
-  font-size: 64px;
-}
-
 .heading {
   color: #3a7898;
   font-family: Oswald, sans-serif;
-}
-
-.main-grid-item {
-  display: flex;
 }
 
 .error {
   color: red;
 }
 
-.heading {
-  color: #3a7898;
-  font-family: Oswald, sans-serif;
-}
-
-.brand {
-  color: #4b94ba;
-}
-
-.colornav {
-  background-color: #fcf6f5;
-  border-bottom: 5px solid #8abad3;
-}
-
-.nav-element {
-  margin: 0 16px 0 0;
-  padding: 5px 0;
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.nav-logout {
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.error {
-  color: red;
-}
-
-.icon-star-filled {
+.icon-star {
   color: #9f2d66;
   cursor: pointer;
   stroke: #9f2d66;
-}
-
-.icon-star-filled :hover {
-  fill: none;
-  stroke-linejoin: bevel;
-  stroke-width: 5%;
 }
 
 .heading, .h2-profile {
@@ -150,6 +118,32 @@
 
 .icon-back :hover {
   color: #2c5b73;
+}
+
+.brand {
+  color: #4b94ba;
+}
+
+.colornav {
+  background-color: #fcf6f5;
+  border-bottom: 5px solid #8abad3;
+}
+
+.nav-element {
+  margin: 0 16px 0 0;
+  padding: 5px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.nav-logout {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.main-grid-item {
+  display: flex;
 }
 
 html, .app-container {

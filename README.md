@@ -30,6 +30,7 @@ single movie by title to the user
 
 ### Links
 
+- Deployed app: [https://watch-til-death.netlify.app/]
 - Rest API: [https://github.com/lxnhard/movie_api]
 
 ## My process
@@ -37,5 +38,12 @@ single movie by title to the user
 ### Built with
 
 - React
+- Redux
+- React Bootstrap
 
 ### What I learned
+
+- React Design Principles for a SPA
+- Managing State and Props in React
+- Redux / Flux Pattern
+- HTTP Requests via Axios
