@@ -55,7 +55,7 @@ export function RegistrationView(props) {
     // if successfully validated ...
     if (isReq) {
       /* Send a request to the server for registration (post) */
-      axios.post('https://watch-til-death.herokuapp.com/users', {
+      axios.post('https://watch-til-death.cyclic.app/users', {
         Username: username,
         Password: password,
         Email: email,

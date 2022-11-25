@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
 
 import './login-view.scss';
 
@@ -45,7 +46,7 @@ export function LoginView(props) {
     // if successfully validated ...
     if (isReq) {
       /* Send a request to the server for authentication */
-      axios.post('https://watch-til-death.herokuapp.com/login', {
+      axios.post('https://watch-til-death.cyclic.app/login', {
         Username: username,
         Password: password
       })
@@ -105,3 +106,10 @@ LoginView.propTypes = {
   username: PropTypes.string,
   password: PropTypes.string
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  handleSubmit: (event) =>
+    dispatch(handleSubmit(event))
+});
+
+export default connect(null, mapDispatchToProps)(LoginView);
