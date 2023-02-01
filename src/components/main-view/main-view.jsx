@@ -92,7 +92,7 @@ class MainView extends React.Component {
     let token = localStorage.getItem('token');
     if (token !== null && user !== null) {
       /* Send a request to the server to add favorite (delete) */
-      axios.post(`https://watch-til-death.cyclic.app/users/${user.Username}/movies/${movieId}`, {}, {
+      axios.put(`https://watch-til-death.cyclic.app/users/${user.Username}/movies/${movieId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(response => {
