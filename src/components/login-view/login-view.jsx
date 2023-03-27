@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 
 import './login-view.scss';
 
+import configData from "../../config.json";
+
 export function LoginView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -46,7 +48,7 @@ export function LoginView(props) {
     // if successfully validated ...
     if (isReq) {
       /* Send a request to the server for authentication */
-      axios.post('https://watch-til-death.cyclic.app/login', {
+      axios.post(configData.API_URL + 'login', {
         Username: username,
         Password: password
       })

@@ -14,6 +14,9 @@ import Card from 'react-bootstrap/Card';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './profile-view.scss';
 
+
+import configData from "../../config.json";
+
 export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -67,7 +70,7 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
     if (isReq) {
 
       /* Send a request to the server to change user data (put) */
-      axios.put(`https://watch-til-death.cyclic.app/users/${user.Username}`, {
+      axios.put(configData.API_URL + `users/${user.Username}`, {
         Username: username,
         Password: password,
         Email: email,
@@ -88,7 +91,7 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
   // unregister
   const handleUnreg = () => {
     let token = localStorage.getItem('token');
-    axios.delete(`https://watch-til-death.cyclic.app/users/${user.Username}`, {
+    axios.delete(configData.API_URL + `users/${user.Username}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {

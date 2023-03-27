@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+import configData from "../../config.json";
 import './registration-view.scss';
 
 export function RegistrationView(props) {
@@ -55,7 +56,7 @@ export function RegistrationView(props) {
     // if successfully validated ...
     if (isReq) {
       /* Send a request to the server for registration (post) */
-      axios.post('https://watch-til-death.cyclic.app/users', {
+      axios.post(configData.API_URL + 'users', {
         Username: username,
         Password: password,
         Email: email,
