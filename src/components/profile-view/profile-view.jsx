@@ -16,6 +16,9 @@ import './profile-view.scss';
 
 import configData from "../../config.json";
 
+
+import { ImageView } from '../image-view/image-view';
+
 export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -24,16 +27,6 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
   const [usernameErr, setUsernameErr] = useState('');
   const [passwordErr, setPasswordErr] = useState('');
   const [emailErr, setEmailErr] = useState('');
-  const [imageKeys, setImageKeys] = useState([]);
-  const [imageUrls, setImageUrls] = useState([]);
-
-
-  // after mount, fetch list of images
-  useEffect(() => {
-    getImages();
-  }, []);
-
-
 
   // validate input
   const validate = () => {
@@ -111,73 +104,6 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
       });
   };
 
-  // get image key list
-  const getImages = () => {
-    let token = localStorage.getItem('token');
-
-    // get list of images
-    axios.get(configData.API_URL + 'images', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
-        // console.log(response);
-        // save keys in array
-        let imageKeys = [];
-        response.data.Contents.forEach((element) => {
-          if (element.Key != "original-images/") {
-            imageKeys.push(element.Key.replace('original-images/', ''));
-            // const url = await getImageUrl(element.Key);
-            // console.log(url);
-          }
-        });
-        setImageKeys(imageKeys);
-        getThumbnailsUrls(imageKeys);
-        return imageKeys;
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-
-  };
-
-  // get list of thumbnail URLs
-  const getThumbnailsUrls = (keys) => {
-    let token = localStorage.getItem('token');
-    let thumbnailUrls = [];
-
-    const requests = [];
-    keys.forEach((key) => {
-      requests.push(axios.get(configData.API_URL + 'images/resized-images/' + key, {
-        headers: { Authorization: `Bearer ${token}` }
-      }));
-    })
-    axios.all(requests).
-      then(
-        axios.spread((...res) => {
-          res.forEach(response => {
-            thumbnailUrls.push(response.data.url);
-          })
-        })).then(() => {
-          setImageUrls(thumbnailUrls);
-        }
-        )
-      .catch(err => { console.log(err) });
-  }
-
-  // get signed image URL
-  const getImageUrl = (key) => {
-    let token = localStorage.getItem('token');
-
-    axios.get(configData.API_URL + 'images/original-images/' + key, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
-        window.open(response.data.url, '_blank', 'noopener,noreferrer')
-      })
-      .catch(error => {
-        console.log(error);
-      })
-  }
 
   return (
     <>
@@ -275,46 +201,7 @@ export function ProfileView({ user, movies, handleDeleteFavorite, onBackClick })
       </Row>
 
 
-      <h2 className="heading mb-4 mt-4">Images</h2>
-      <Row md={{ offset: 3 }}>
-        {(imageUrls.length > 0) && imageUrls.map((url, index) =>
-          <Col xs={12} md={4} lg={3} className="main-grid-item mb-3" key={url}>
-
-            <Card className="w-100" key={url}>
-              <Card.Body className="cardbody d-flex">
-                {/* <Link to={getImageUrl(imageKeys[index])}> */}
-                <Card.Img variant="top" src={url} className="image-link" title={imageKeys[index]} onClick={() => getImageUrl(imageKeys[index])} />
-                {/* </Link> */}
-              </Card.Body>
-            </Card>
-          </Col>
-        )}
-      </Row>
-      {/* <Row md={{ offset: 3 }}>
-        {user.FavoriteMovies && (movies.filter(m => user.FavoriteMovies.includes(m._id))).map(movie => (
-          <Col xs={12} md={3} className="main-grid-item mb-3" key={movie._id}>
-
-            <Card className="w-100">
-              <Link to={`/movies/${movie._id}`}>
-                <Card.Img variant="top" src={movie.ImagePath} alt={`Poster: ${movie.Title}`} title={movie.Title} className="image-link" />
-              </Link>
-              <Card.Body className="cardbody d-flex">
-
-                <Card.Title><h3 className="heading card-title">{movie.Title}</h3></Card.Title>
-
-                <div className="align-self-end ml-auto">
-                  <FontAwesomeIcon icon={['fas', 'fa-star']} type="button" className="icon-star m-n2" onClick={() => handleDeleteFavorite(movie._id)} title="Remove from favorites" alt="Remove from favorites" size={"2x"} />
-                </div>
-
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-        {!(user.FavoriteMovies.length > 0) && <Col><p>You have not added any movies to your list of favorites yet. Click the star next to a movie's title to add it to your list of favorites.</p></Col>}
-      </Row> */}
-
-
-
+      <ImageView></ImageView>
     </>
   );
 }
